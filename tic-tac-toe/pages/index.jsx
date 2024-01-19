@@ -8,7 +8,7 @@ import {
 import { Header } from "../components/header";
 
 export default function HomePage() {
-  const [playersCount] = useState(4);
+  const [playersCount] = useState(2);
 
   const { cells, currentMove, nextMove, handleCellClick, winnerSequence } =
     useGameState(playersCount);
