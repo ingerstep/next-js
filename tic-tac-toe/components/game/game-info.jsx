@@ -26,14 +26,14 @@ const players = [
     symbol: GAME_SYMBOLS.ZERO,
   },
   {
-    id: 1,
+    id: 3,
     name: "Player3",
     rating: 200,
     avatar: avatarSrc3,
     symbol: GAME_SYMBOLS.TRINGLE,
   },
   {
-    id: 1,
+    id: 4,
     name: "Player4asfsafsaf",
     rating: 1000,
     avatar: avatarSrc4,
