@@ -1,8 +1,9 @@
 import Link from "next/link";
+
 import { ArrowLeftIcon } from "./icons/arrow-left-icon";
+import { HistoryIcon } from "./icons/history-icon";
 import { StarIcon } from "./icons/star-icon";
 import { UserIcon } from "./icons/user-icon";
-import { HistoryIcon } from "./icons/history-icon";
 
 export function GameTitle() {
   return (

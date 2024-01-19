@@ -1,8 +1,9 @@
 import Image from "next/image";
-import logoSrc from "./logo.svg";
+
 import { Profile } from "../profile";
-import { ArrowDownIcon } from "./arrow-down-icon";
 import { UiButton } from "../uikit/ui-button";
+import logoSrc from "./logo.svg";
+import { ArrowDownIcon } from "./arrow-down-icon";
 
 export function Header() {
   return (
