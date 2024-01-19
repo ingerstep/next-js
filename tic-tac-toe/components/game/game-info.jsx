@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
+import { useEffect, useState } from "react";
 import { Profile } from "../profile";
-import { CrossIcon } from "./icons/cross-icon";
 import { GameSymbol } from "./game-symbol";
 import { GAME_SYMBOLS } from "./constants";
 
@@ -23,7 +23,7 @@ const players = [
     name: "Player2",
     rating: 900,
     avatar: avatarSrc2,
-    symbol: GAME_SYMBOLS.SQUARE,
+    symbol: GAME_SYMBOLS.ZERO,
   },
   {
     id: 1,
@@ -37,11 +37,11 @@ const players = [
     name: "Player4asfsafsaf",
     rating: 1000,
     avatar: avatarSrc4,
-    symbol: GAME_SYMBOLS.ZERO,
+    symbol: GAME_SYMBOLS.SQUARE,
   },
 ];
 
-export function GameInfo({ className, playersCount }) {
+export function GameInfo({ className, playersCount, currentMove }) {
   return (
     <div
       className={clsx(
@@ -51,6 +51,7 @@ export function GameInfo({ className, playersCount }) {
     >
       {players.slice(0, playersCount).map((player, index) => (
         <PlayerInfo
+          isTimerRunning={currentMove === player.symbol}
           isRight={index % 2 === 1}
           playerInfo={player}
           key={player.id}
@@ -60,7 +61,34 @@ export function GameInfo({ className, playersCount }) {
   );
 }
 
-function PlayerInfo({ playerInfo, isRight }) {
+function PlayerInfo({ playerInfo, isRight, isTimerRunning }) {
+  const [second, setSeconds] = useState(60);
+
+  const minutesString = String(Math.floor(second / 60)).padStart(2, "0");
+  const secondsString = String(second % 60).padStart(2, "0");
+
+  const isDanger = second < 10;
+
+  useEffect(() => {
+    if (isTimerRunning) {
+      const interval = setInterval(() => {
+        setSeconds((s) => Math.max(s - 1, 0));
+      }, 1000);
+
+      return () => {
+        clearInterval(interval);
+        setSeconds(60);
+      };
+    }
+  }, [isTimerRunning]);
+
+  const getTimerColor = () => {
+    if (isTimerRunning) {
+      return isDanger ? "text-orange-600" : "text-slate-900";
+    }
+    return "text-slate-200";
+  };
+
   return (
     <div className="flex gap-3 items-center">
       <div className={clsx("relative", isRight && "order-3")}>
@@ -79,11 +107,12 @@ function PlayerInfo({ playerInfo, isRight }) {
       ></div>
       <div
         className={clsx(
-          "text-slate-500 text-lg font-semibold",
+          "text-lg font-semibold w-[60px]",
           isRight && "order-1",
+          getTimerColor(),
         )}
       >
-        01:08
+        {minutesString}:{secondsString}
       </div>
     </div>
   );
