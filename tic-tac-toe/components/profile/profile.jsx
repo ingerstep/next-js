@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 import avatarSrc from "./avatar.png";
 
-export function Profile({ className }) {
+export function Profile({ className, name, rating, avatar = avatarSrc }) {
   return (
     <div
       className={clsx(
@@ -11,11 +11,11 @@ export function Profile({ className }) {
         className,
       )}
     >
-      <Image src={avatarSrc} width={48} height={48} alt="avatar" />
-      <div>
-        <div className="text-lg leading-tight">Paromovevg</div>
+      <Image src={avatar} width={48} height={48} alt="avatar" />
+      <div className="overflow-hidden">
+        <div className="text-lg leading-tight truncate">{name}</div>
         <div className="text-slate-400 text-xs leading-tight">
-          Рейтинг: 1230
+          Рейтинг: {rating}
         </div>
       </div>
     </div>
