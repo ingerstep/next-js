@@ -16,19 +16,28 @@ import { GameOverModal } from "./ui/game-over-modal";
 import { GameTitle } from "./ui/game-title";
 import { PlayerInfo } from "./ui/player-info";
 import { computeWinner } from "./model/compute-winner";
+import { computePlayerTimer } from "./model/compute-player-timer";
+import { useInterval } from "./lib/timers";
 
-const PLAYERS_COUNT = 4;
+const PLAYERS_COUNT = 2;
 
 export function Game() {
   const [gameState, dispatch] = useReducer(
     gameStateReducer,
     {
       playersCount: PLAYERS_COUNT,
-      defaultTimer: 60_000,
+      defaultTimer: 5_000,
       currentMoveStart: Date.now(),
     },
     initGameState,
   );
+
+  useInterval(1000, gameState.currentMoveStart, () => {
+    dispatch({
+      type: GAME_STATE_ACTIONS.TICK,
+      now: Date.now(),
+    });
+  });
 
   const winnerSequence = computeWinner(gameState);
   const nextMove = getNextMove(gameState);
@@ -50,17 +59,24 @@ export function Game() {
         gameInfo={
           <GameInfo isRatingGame playersCount={4} timeMode={"1 мин на ход"} />
         }
-        playersList={PLAYERS.slice(0, PLAYERS_COUNT).map((player, index) => (
-          <PlayerInfo
-            avatar={player.avatar}
-            key={player.id}
-            name={player.name}
-            symbol={player.symbol}
-            isRight={index % 2 === 1}
-            rating={player.rating}
-            timer={gameState.timers[player.symbol]}
-          />
-        ))}
+        playersList={PLAYERS.slice(0, PLAYERS_COUNT).map((player, index) => {
+          const { timer, timerStartAt } = computePlayerTimer(
+            gameState,
+            player.symbol,
+          );
+          return (
+            <PlayerInfo
+              avatar={player.avatar}
+              key={player.id}
+              name={player.name}
+              symbol={player.symbol}
+              isRight={index % 2 === 1}
+              rating={player.rating}
+              timer={timer}
+              timerStartAt={timerStartAt}
+            />
+          );
+        })}
         gameMoveInfo={
           <GameMoveInfo currentMove={currentMove} nextMove={nextMove} />
         }
