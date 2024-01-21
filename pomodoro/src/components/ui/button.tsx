@@ -1,5 +1,12 @@
 import React, { FC } from "react";
-import { ButtonProps } from "./Button.types";
+import { MouseEventHandler, ReactNode } from "react";
+
+interface ButtonProps {
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  children: ReactNode;
+  type?: "button" | "submit" | "reset";
+  className?: string;
+}
 
 export const Button: FC<ButtonProps> = ({
   onClick,
