@@ -1,0 +1,40 @@
+.task {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #E4E4E4;
+    border-top: 1px solid #E4E4E4;
+}
+
+.id {
+    margin-right: 10px;
+    width: 25px;
+    text-align: center;
+    padding: 4px;
+    border: 1px solid #E4E4E4;
+    border-radius: 50%;
+    font-size: 16px;
+font-weight: 300;
+line-height: 17px;
+}
+
+.text {
+    margin-right: auto;
+    font-size: 16px;
+    background-color: transparent;
+font-weight: 300;
+line-height: 17px;
+}
+
+.button {
+    background-color:transparent;
+}
+
+.edit {
+    background-color: #F4F4F4;
+    margin-right: auto;
+    font-size: 16px;
+font-weight: 300;
+line-height: 17px;
+}

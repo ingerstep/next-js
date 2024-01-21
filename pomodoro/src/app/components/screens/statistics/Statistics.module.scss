@@ -1,0 +1,28 @@
+.main {
+    padding-top: 88px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.title {
+font-size: 24px;
+font-weight: 700;
+line-height: 33px;
+}
+
+.filter {
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    width: 370px;
+padding: 20px 15px;
+font-size: 16px;
+font-weight: 400;
+line-height: 17px;
+}
+
