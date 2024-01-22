@@ -30,15 +30,16 @@ export const Dashboard: FC = () => {
       </div>
       <div className="w-full h-full flex justify-center items-center flex-col">
         <div className="relative">
-          <div className=" text-9xl">{formatTime(timeRemaining)}</div>
+          <div className="font-extralight text-[150px] leading-normal">
+            {formatTime(timeRemaining)}
+          </div>
           <button className="absolute top-1/2 -translate-y-1/2 -right-20">
             <SvgPlus className="text-[#C4C4C4] hover:text-[#899441] transition-colors" />
           </button>
         </div>
         <span className="mb-8 text-[#999] text-base font-normal">
-          Задача 1 -{" "}
+          {"Задача 1 - "}
           <span className="text-base font-normal">
-            {" "}
             {tasksArray[0] && tasksArray[0].value}
           </span>
         </span>

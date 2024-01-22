@@ -1,9 +1,12 @@
 "use client";
 
 import { FC } from "react";
-import Image from "next/image";
 import { useStore } from "@/store/store";
 import { Modal } from "./modal";
+import { SvgIncrease } from "../icons/increase";
+import { SvgDecrease } from "../icons/decrease";
+import { SvgEdit } from "../icons/edit";
+import { SvgDelete } from "../icons/delete";
 
 interface DropdownProps {
   id: number;
@@ -51,40 +54,22 @@ export const Dropdown: FC<DropdownProps> = ({
         onClick={increaseCount}
         className="flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors"
       >
-        <Image
-          className="mr-2"
-          src="/increase.svg"
-          alt="Increase Button"
-          width={18}
-          height={18}
-        />
-        {"Увеличить"}
+        <SvgIncrease />
+        <span className="ml-2">Увеличить</span>
       </button>
       <button
         onClick={decreaseCount}
         className="flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors"
       >
-        <Image
-          className="mr-2"
-          src="/decrease.svg"
-          alt="Decrease Button"
-          width={18}
-          height={18}
-        />
-        {"Уменьшить"}
+        <SvgDecrease />
+        <span className="ml-2">Уменьшить</span>
       </button>
       <button
         onClick={editItem}
         className="flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors"
       >
-        <Image
-          className="mr-2"
-          src="/edit.svg"
-          alt="Edit Button"
-          width={18}
-          height={18}
-        />
-        {"Редактировать"}
+        <SvgEdit />
+        <span className="ml-2">Редактировать</span>
       </button>
       <button
         onClick={() => {
@@ -92,14 +77,8 @@ export const Dropdown: FC<DropdownProps> = ({
         }}
         className="flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors"
       >
-        <Image
-          className="mr-2"
-          src="/delete.svg"
-          alt="Delete Button"
-          width={18}
-          height={18}
-        />
-        {"Удалить"}
+        <SvgDelete />
+        <span className="ml-2">Удалить</span>
       </button>
       {modalOpen && <Modal removeItem={removeItem} />}
     </div>

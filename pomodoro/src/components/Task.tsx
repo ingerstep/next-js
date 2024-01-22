@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from "react";
-import Image from "next/image";
 import clsx from "clsx";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { useStore } from "@/store/store";
 import { Dropdown } from "./ui/dropdown";
+import { SvgDots } from "./icons/dots";
 
 interface ITaskProp {
   id: number;
@@ -60,8 +60,8 @@ export const Task: FC<ITaskProp> = ({ text, id }) => {
   }, [taskText]);
 
   return (
-    <div className="relative flex items-center py-4 px-0 border-t border-b border-solid border-gray-300">
-      <span className="mr-2 w-6 text-center p-1 border border-solid border-gray-300 rounded-full font-light text-base">
+    <div className="relative flex items-center py-4 px-0 -mt-[1px] border-t border-b border-solid border-gray-300">
+      <span className="mr-2 w-[25px] h-[25px] text-center border border-solid border-gray-300 rounded-full font-light text-base">
         {tasksArray[id].pomodoros}
       </span>
       <div
@@ -70,7 +70,7 @@ export const Task: FC<ITaskProp> = ({ text, id }) => {
       >
         <input
           className={clsx(
-            "mr-auto text-base font-light",
+            "mr-auto text-base font-light focus-visible:outline-none",
             disable ? "bg-transparent" : " bg-[#F4F4F4]"
           )}
           disabled={disable}
@@ -80,8 +80,7 @@ export const Task: FC<ITaskProp> = ({ text, id }) => {
         />
       </div>
       <button onClick={() => setIsOpen(true)} className="bg-transparent">
-        {" "}
-        <Image alt="Button dots" src="/dots.svg" width={26} height={6} />
+        <SvgDots />
       </button>
       {isOpen && (
         <div ref={ref}>

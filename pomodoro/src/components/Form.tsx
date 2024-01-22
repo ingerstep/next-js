@@ -28,13 +28,18 @@ export const Form: FC = () => {
   return (
     <div className="flex flex-col w-[370px]">
       <input
-        className="py-5 px-4 text-[#999] bg-[#F4F4F4] text-base font-light"
+        className="py-5 px-4 mb-6 text-[#999] bg-[#F4F4F4] text-base font-light focus-visible:outline-none"
         value={value}
         onChange={onChange}
         placeholder="Название задачи"
         type="text"
       />
-      <Button size="default" variant="green" onClick={handleClick}>
+      <Button
+        size="default"
+        variant="green"
+        onClick={handleClick}
+        className="mb-[26px]"
+      >
         Добавить
       </Button>
       {tasksArray.map((task, index) => (

@@ -37,7 +37,7 @@ export const Modal: FC<ModalProps> = ({ removeItem }) => {
         </button>
         <button
           onClick={() => setModalOpen(false)}
-          className="absolute top-3 right-3 hover:rotate-45 transition-transform"
+          className="absolute top-3 right-3 text-[#C4C4C4] hover:text-[#DC3E22] transition-colors"
         >
           <SvgExit />
         </button>
