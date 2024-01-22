@@ -1,8 +1,11 @@
+"use client";
+
 import { FC } from "react";
-import Image from "next/image";
 import { useStore } from "@/store/store";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { createPortal } from "react-dom";
+import { SvgExit } from "../icons/exit";
+import { Button } from "./button";
 
 interface ModalProps {
   removeItem: () => void;
@@ -16,7 +19,7 @@ export const Modal: FC<ModalProps> = ({ removeItem }) => {
   if (!node) return;
 
   return createPortal(
-    <div className="absolute w-full h-full top-0 flex justify-center items-center bg-black/50">
+    <div className="absolute w-full h-full top-0 flex justify-center items-center bg-black/50 z-30">
       <div
         ref={ref}
         className="relative flex flex-col items-center py-6 px-20 bg-white"
@@ -24,23 +27,19 @@ export const Modal: FC<ModalProps> = ({ removeItem }) => {
         <div className="mb-6 text-[#333] text-2xl font-normal">
           Удалить задачу?
         </div>
-        <button
-          onClick={removeItem}
-          className="mb-2 py-4 px-12 text-white text-center text-base bg-[#DC3E22] font-medium"
-        >
+        <Button size="default" variant="red" onClick={removeItem}>
           Удалить
+        </Button>
+        <button onClick={() => setModalOpen(false)}>
+          <span className="pb-1 text-base text-[#333] font-light hover:border-b hover:border-[#333] transition-all">
+            Отмена
+          </span>
         </button>
         <button
           onClick={() => setModalOpen(false)}
-          className="pb-1 text-[#333] text-base font-light border-b-[2px solid #333]"
+          className="absolute top-3 right-3 hover:rotate-45 transition-transform"
         >
-          Отмена
-        </button>
-        <button
-          onClick={() => setModalOpen(false)}
-          className="absolute top-3 right-3"
-        >
-          <Image src="/exit.svg" alt="Exit Button" width={24} height={24} />
+          <SvgExit />
         </button>
       </div>
     </div>,

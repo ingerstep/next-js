@@ -1,3 +1,5 @@
+"use client";
+
 import { FC } from "react";
 import Image from "next/image";
 import { useStore } from "@/store/store";
@@ -43,11 +45,11 @@ export const Dropdown: FC<DropdownProps> = ({
   };
 
   return (
-    <div className="absolute top-12 -right-16 flex flex-col items-start border-[1px solid #C4C4C4]">
-      <span className="absolute -top-1 left-1/2 w-2 h-2 bg-white border-t border-b border-solid border-gray-300 -translate-x-2/4 rotate-45"></span>
+    <div className="absolute top-14 -right-[74px] flex flex-col items-start bg-white border border-solid border-gray-300 text-base z-10 ">
+      <span className="absolute w-2 h-2 -top-1 left-1/2  border-t border-l border-solid border-gray-300 -translate-x-2/4 rotate-45 bg-white"></span>
       <button
         onClick={increaseCount}
-        className="flex items-center w-full bg-white py-2 px-4 mt-1"
+        className="flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors"
       >
         <Image
           className="mr-2"
@@ -60,7 +62,7 @@ export const Dropdown: FC<DropdownProps> = ({
       </button>
       <button
         onClick={decreaseCount}
-        className="flex items-center w-full bg-white py-2 px-4"
+        className="flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors"
       >
         <Image
           className="mr-2"
@@ -73,7 +75,7 @@ export const Dropdown: FC<DropdownProps> = ({
       </button>
       <button
         onClick={editItem}
-        className="flex items-center w-full bg-white py-2 px-4"
+        className="flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors"
       >
         <Image
           className="mr-2"
@@ -88,7 +90,7 @@ export const Dropdown: FC<DropdownProps> = ({
         onClick={() => {
           setModalOpen(true);
         }}
-        className="flex items-center w-full bg-white py-2 px-4"
+        className="flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors"
       >
         <Image
           className="mr-2"

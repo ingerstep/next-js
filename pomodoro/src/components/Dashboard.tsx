@@ -1,7 +1,10 @@
+"use client";
+
 import { FC } from "react";
-import Image from "next/image";
 import { useCountdown } from "@/hooks/useCountdown";
 import { useStore } from "@/store/store";
+import { Button } from "./ui/button";
+import { SvgPlus } from "./icons/plus";
 
 export const Dashboard: FC = () => {
   const { tasksArray } = useStore();
@@ -29,7 +32,7 @@ export const Dashboard: FC = () => {
         <div className="relative">
           <div className=" text-9xl">{formatTime(timeRemaining)}</div>
           <button className="absolute top-1/2 -translate-y-1/2 -right-20">
-            <Image src="/plus.svg" alt="Plus Button" width={50} height={50} />
+            <SvgPlus className="text-[#C4C4C4] hover:text-[#899441] transition-colors" />
           </button>
         </div>
         <span className="mb-8 text-[#999] text-base font-normal">
@@ -42,42 +45,42 @@ export const Dashboard: FC = () => {
         <div>
           {isRunning ? (
             <>
-              <button
-                className="py-4 px-12 text-white bg-[#A8B64F] text-center text-base font-medium"
+              <Button
+                size="sm"
+                variant="green"
                 onClick={pause}
+                className="mr-6"
               >
                 Пауза
-              </button>
-              <button
-                className="text-[#C4C4C4] py-3 px-12 bg-transparent text-center border-2 border-solid border-[#C4C4C4] text-base font-medium"
-                onClick={skip}
-              >
+              </Button>
+              <Button onClick={skip} size="md" variant="red">
                 Пропустить
-              </button>
+              </Button>
             </>
           ) : (
             <>
               {!isRunning && timeRemaining === totalTime ? (
-                <button
-                  className="py-4 px-12 text-white bg-[#A8B64F] text-center text-base font-medium"
+                <Button
+                  size="sm"
+                  variant="green"
                   onClick={start}
+                  className="mr-6"
                 >
                   Старт
-                </button>
+                </Button>
               ) : (
-                <button
-                  className="py-4 px-12 text-white bg-[#A8B64F] text-center text-base font-medium"
+                <Button
+                  size="md"
+                  variant="green"
                   onClick={resume}
+                  className="mr-6"
                 >
                   Продолжить
-                </button>
+                </Button>
               )}
-              <button
-                className="text-[#C4C4C4] py-3 px-12 bg-transparent text-center border-2 border-solid border-[#C4C4C4] text-base font-medium"
-                onClick={stop}
-              >
+              <Button size="sm" variant="red" onClick={stop}>
                 Стоп
-              </button>
+              </Button>
             </>
           )}
         </div>

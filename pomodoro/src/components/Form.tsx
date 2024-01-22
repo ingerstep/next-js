@@ -3,6 +3,7 @@
 import { ChangeEvent, FC, useState } from "react";
 import { ITask, useStore } from "@/store/store";
 import { Task } from "./Task";
+import { Button } from "./ui/button";
 
 export const Form: FC = () => {
   const { tasksArray, setTasksArray, fullTimeValue, setFullTimeValue } =
@@ -27,18 +28,15 @@ export const Form: FC = () => {
   return (
     <div className="flex flex-col w-[370px]">
       <input
-        className=" py-5 px-4 text-[#999] bg-[#F4F4F4] text-base font-light"
+        className="py-5 px-4 text-[#999] bg-[#F4F4F4] text-base font-light"
         value={value}
         onChange={onChange}
         placeholder="Название задачи"
         type="text"
       />
-      <button
-        className="w-[45%] py-4 px-12 text-white bg-[#A8B64F] text-base font-medium"
-        onClick={handleClick}
-      >
+      <Button size="default" variant="green" onClick={handleClick}>
         Добавить
-      </button>
+      </Button>
       {tasksArray.map((task, index) => (
         <Task key={index} text={task.value} id={index} />
       ))}

@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import Image from "next/image";
+import clsx from "clsx";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { useStore } from "@/store/store";
-import clsx from "clsx";
 import { Dropdown } from "./ui/dropdown";
 
 interface ITaskProp {
