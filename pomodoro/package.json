@@ -7,7 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write \"**/*.{js,jsx,json,ts,tsx,css,scss,html}\""
+    "format": "prettier --write \"**/*.{js,jsx,json,ts,tsx,css,scss,html}\"",
+    "precommit": "prettier --write \"**/*.{js,jsx,json,ts,tsx,css,scss,html}\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn precommit"
+    }
   },
   "dependencies": {
     "clsx": "^2.1.0",
@@ -23,6 +29,7 @@
     "autoprefixer": "^10.4.17",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
+    "husky": "^8.0.3",
     "postcss": "^8.4.33",
     "prettier": "3.2.4",
     "sass": "^1.69.5",
