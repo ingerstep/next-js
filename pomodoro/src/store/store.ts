@@ -1,24 +1,24 @@
-import { create } from "zustand";
+import { create } from 'zustand';
 
-export interface ITask {
+export interface TasksArrayProps {
   value: string;
   pomodoros: number;
 }
 
 export interface State {
-  tasksArray: ITask[];
-  setTasksArray: (tasksArray: ITask[]) => void;
+  tasksArray: TasksArrayProps[];
+  setTasksArray: (tasksArray: TasksArrayProps[]) => void;
   fullTimeValue: number;
-  setFullTimeValue: (fullTimeValue: number) => void
-  modalOpen: boolean
-  setModalOpen: (modalOpen: boolean) => void
-  pauseTime: number
+  setFullTimeValue: (fullTimeValue: number) => void;
+  modalOpen: boolean;
+  setModalOpen: (modalOpen: boolean) => void;
+  pauseTime: number;
   setPauseTime: (pauseTime: number) => void;
-  stopCount: number
-  setStopCount: (stopCount: number) => void
-  workingTime: number
-  setWorkingTime: (workingTime: number) => void
-};
+  stopCount: number;
+  setStopCount: (stopCount: number) => void;
+  workingTime: number;
+  setWorkingTime: (workingTime: number) => void;
+}
 
 export const useStore = create<State>((set) => ({
   tasksArray: [],

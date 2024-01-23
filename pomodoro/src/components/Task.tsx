@@ -1,31 +1,25 @@
-"use client";
+'use client';
 
-import { FC, useEffect, useState } from "react";
-import clsx from "clsx";
-import { useOutsideClick } from "@/hooks/use-outside-click";
-import { useStore } from "@/store/store";
-import { Dropdown } from "./ui/dropdown";
-import { SvgDots } from "./icons/dots";
-import { useLocalStorageState } from "@/hooks/use-storage";
+import { FC, useEffect, useState } from 'react';
+import clsx from 'clsx';
+import { useOutsideClick } from '@/hooks/use-outside-click';
+import { TasksArrayProps, useStore } from '@/store/store';
+import { Dropdown } from './ui/dropdown';
+import { SvgDots } from './icons/dots';
+import { useLocalStorageState } from '@/hooks/use-storage';
 
-interface ITaskProp {
+interface TaskProps {
   id: number;
   text: string;
 }
 
-export const Task: FC<ITaskProp> = ({ text, id }) => {
-  const {
-    tasksArray,
-    setTasksArray,
-    setFullTimeValue,
-    fullTimeValue,
-    modalOpen,
-  } = useStore();
+export const Task: FC<TaskProps> = ({ text, id }) => {
+  const { tasksArray, setTasksArray, setFullTimeValue, fullTimeValue, modalOpen } = useStore();
   const [isOpen, setIsOpen] = useState(false);
   const [taskText, setTaskText] = useState(text);
   const [disable, setDisable] = useState(true);
 
-  const [arrays, setArrays] = useLocalStorageState<Array<any>>("array", []);
+  const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>('array', []);
 
   const inputRef = useOutsideClick(() => setDisable(true));
   const onClose = () => setIsOpen(false);
@@ -44,7 +38,7 @@ export const Task: FC<ITaskProp> = ({ text, id }) => {
       return item;
     });
     setTasksArray(filteredArray);
-    setArrays(filteredArray);
+    setStorageTasks(filteredArray);
   };
 
   const decreaseCount = () => {
@@ -59,7 +53,7 @@ export const Task: FC<ITaskProp> = ({ text, id }) => {
       return item;
     });
     setTasksArray(filteredArray);
-    setArrays(filteredArray);
+    setStorageTasks(filteredArray);
   };
 
   const dropdownRef = () => {
@@ -70,33 +64,31 @@ export const Task: FC<ITaskProp> = ({ text, id }) => {
 
   useEffect(() => {
     const filteredArray = tasksArray.map((item, index) =>
-      index === id ? { ...item, value: taskText } : item
+      index === id ? { ...item, value: taskText } : item,
     );
+
     setTasksArray(filteredArray);
-    setArrays(filteredArray);
+    setStorageTasks(filteredArray);
   }, [taskText]);
 
   return (
-    <div className="relative flex items-center py-4 px-0 -mt-[1px] border-t border-b border-solid border-gray-300">
-      <span className="mr-2 w-[25px] h-[25px] text-center border border-solid border-gray-300 rounded-full font-light text-base">
+    <div className='relative flex items-center py-4 px-0 -mt-[1px] border-t border-b border-solid border-gray-300'>
+      <span className='mr-2 w-[25px] h-[25px] text-center border border-solid border-gray-300 rounded-full font-light text-base'>
         {tasksArray[id].pomodoros}
       </span>
-      <div
-        ref={inputRef}
-        className="mr-auto text-base bg-transparent font-light"
-      >
+      <div ref={inputRef} className='mr-auto text-base bg-transparent font-light'>
         <input
           className={clsx(
-            "mr-auto text-base font-light focus-visible:outline-none",
-            disable ? "bg-transparent" : " bg-[#F4F4F4]"
+            'mr-auto text-base font-light focus-visible:outline-none',
+            disable ? 'bg-transparent' : ' bg-[#F4F4F4]',
           )}
           disabled={disable}
           onChange={(e) => setTaskText(e.target.value)}
           value={tasksArray[id].value}
-          type="text"
+          type='text'
         />
       </div>
-      <button onClick={() => setIsOpen(true)} className="bg-transparent">
+      <button onClick={() => setIsOpen(true)} className='bg-transparent'>
         <SvgDots />
       </button>
       {isOpen && (

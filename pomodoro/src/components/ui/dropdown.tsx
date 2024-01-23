@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { FC, useState } from "react";
-import { useStore } from "@/store/store";
-import { Modal } from "./modal";
-import { SvgIncrease } from "../icons/increase";
-import { SvgDecrease } from "../icons/decrease";
-import { SvgEdit } from "../icons/edit";
-import { SvgDelete } from "../icons/delete";
-import { useLocalStorageState } from "@/hooks/use-storage";
+import { FC } from 'react';
+import { TasksArrayProps, useStore } from '@/store/store';
+import { Modal } from './modal';
+import { SvgIncrease } from '../icons/increase';
+import { SvgDecrease } from '../icons/decrease';
+import { SvgEdit } from '../icons/edit';
+import { SvgDelete } from '../icons/delete';
+import { useLocalStorageState } from '@/hooks/use-storage';
 
 interface DropdownProps {
   id: number;
@@ -24,23 +24,17 @@ export const Dropdown: FC<DropdownProps> = ({
   increaseCount,
   decreaseCount,
 }) => {
-  const {
-    tasksArray,
-    setTasksArray,
-    fullTimeValue,
-    setFullTimeValue,
-    modalOpen,
-    setModalOpen,
-  } = useStore();
+  const { tasksArray, setTasksArray, fullTimeValue, setFullTimeValue, modalOpen, setModalOpen } =
+    useStore();
 
-  const [arrays, setArrays] = useLocalStorageState<Array<any>>("array", []);
+  const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>('array', []);
 
   const removeItem = () => {
     setFullTimeValue(fullTimeValue - tasksArray[id].pomodoros * 25);
 
     const updateArray = tasksArray.filter((item, index) => index !== id);
 
-    setArrays(updateArray);
+    setStorageTasks(updateArray);
     setTasksArray(updateArray);
 
     onClose();
@@ -54,37 +48,37 @@ export const Dropdown: FC<DropdownProps> = ({
   };
 
   return (
-    <div className="absolute top-14 -right-[74px] flex flex-col items-start bg-white border border-solid border-gray-300 text-base z-10 ">
-      <span className="absolute w-2 h-2 -top-1 left-1/2  border-t border-l border-solid border-gray-300 -translate-x-2/4 rotate-45 bg-white"></span>
+    <div className='absolute top-14 -right-[74px] flex flex-col items-start bg-white border border-solid border-gray-300 text-base z-10 '>
+      <span className='absolute w-2 h-2 -top-1 left-1/2  border-t border-l border-solid border-gray-300 -translate-x-2/4 rotate-45 bg-white'></span>
       <button
         onClick={increaseCount}
-        className="flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors"
+        className='flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors'
       >
         <SvgIncrease />
-        <span className="ml-2">Увеличить</span>
+        <span className='ml-2'>Увеличить</span>
       </button>
       <button
         onClick={decreaseCount}
-        className="flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors"
+        className='flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors'
       >
         <SvgDecrease />
-        <span className="ml-2">Уменьшить</span>
+        <span className='ml-2'>Уменьшить</span>
       </button>
       <button
         onClick={editItem}
-        className="flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors"
+        className='flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors'
       >
         <SvgEdit />
-        <span className="ml-2">Редактировать</span>
+        <span className='ml-2'>Редактировать</span>
       </button>
       <button
         onClick={() => {
           setModalOpen(true);
         }}
-        className="flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors"
+        className='flex items-center w-full  py-2 px-4 hover:bg-[#F4F4F4] transition-colors'
       >
         <SvgDelete />
-        <span className="ml-2">Удалить</span>
+        <span className='ml-2'>Удалить</span>
       </button>
       {modalOpen && <Modal removeItem={removeItem} />}
     </div>

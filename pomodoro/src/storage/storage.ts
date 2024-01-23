@@ -1,63 +1,62 @@
 class StorageWrapper {
-    private storage?: Storage;
+  private storage?: Storage;
 
-    constructor(type: 'local' | 'session') {
-        if (typeof window !== 'undefined') {
-            try {
-                this.storage = type === 'local' ? window.localStorage : window.sessionStorage
-            } catch (error) {
-                console.log(error)
-            }
-        }
+  constructor(type: 'local' | 'session') {
+    if (typeof window !== 'undefined') {
+      try {
+        this.storage = type === 'local' ? window.localStorage : window.sessionStorage;
+      } catch (error) {
+        console.log(error);
+      }
     }
+  }
 
-    get length() {
-        if (!this.storage) return
+  get length() {
+    if (!this.storage) return;
 
-        return this.storage.length
+    return this.storage.length;
+  }
+
+  get<T>(key: string) {
+    if (!this.storage) return;
+
+    try {
+      const value = this.storage.getItem(key);
+
+      if (value === null) {
+        return;
+      }
+
+      return JSON.parse(value) as T;
+    } catch (error) {
+      console.error(error);
     }
+  }
 
-    get<T>(key: string) {
-        if (!this.storage) return
+  set(key: string, value: unknown) {
+    if (!this.storage) return;
 
-        try {
-            const value = this.storage.getItem(key)
+    try {
+      const stringValue = JSON.stringify(value);
 
-            if (value === null) {
-                return;
-            }
-
-            return JSON.parse(value) as T
-        } catch (error) {
-            console.error(error)
-        }
+      this.storage.setItem(key, stringValue);
+    } catch (error) {
+      console.error(error);
     }
+  }
 
-    set(key: string, value: unknown) {
-        if (!this.storage) return
+  remove(key: string) {
+    if (!this.storage) return;
 
-        try {
-            const stringValue = JSON.stringify(value)
+    this.storage.removeItem(key);
+  }
 
-            this.storage.setItem(key, stringValue)
-        } catch (error) {
-            console.error(error)
-        }
-    }
+  clear() {
+    if (!this.storage) return;
 
-    remove(key: string) {
-        if (!this.storage) return
-
-        this.storage.removeItem(key)
-    }
-
-    clear() {
-        if (!this.storage) return
-
-        this.storage.clear()
-    }
-
+    this.storage.clear();
+  }
 }
 
-export const localStorageWrapper = new StorageWrapper('local')
-export const sessionStorageWrapper = new StorageWrapper('session')
+export const localStorageWrapper = new StorageWrapper('local');
+export const sessionStorageWrapper = new StorageWrapper('session');
