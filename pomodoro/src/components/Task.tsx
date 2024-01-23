@@ -14,7 +14,10 @@ interface TaskProps {
 }
 
 export const Task: FC<TaskProps> = ({ text, id }) => {
-  const { tasksArray, setTasksArray, setFullTimeValue, fullTimeValue, modalOpen } = useStore();
+  const { tasksArray, setTasksArray, 
+    setFullTimeValue, fullTimeValue, 
+    modalOpen } = useStore();
+    //fix
   const [isOpen, setIsOpen] = useState(false);
   const [taskText, setTaskText] = useState(text);
   const [disable, setDisable] = useState(true);
