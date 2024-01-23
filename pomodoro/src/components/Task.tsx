@@ -1,9 +1,12 @@
+"use client";
+
 import { FC, useEffect, useState } from "react";
 import clsx from "clsx";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import { useStore } from "@/store/store";
 import { Dropdown } from "./ui/dropdown";
 import { SvgDots } from "./icons/dots";
+import { useLocalStorageState } from "@/hooks/use-storage";
 
 interface ITaskProp {
   id: number;
@@ -22,39 +25,41 @@ export const Task: FC<ITaskProp> = ({ text, id }) => {
   const [taskText, setTaskText] = useState(text);
   const [disable, setDisable] = useState(true);
 
+  const [arrays, setArrays] = useLocalStorageState<Array<any>>("array", []);
+
   const inputRef = useOutsideClick(() => setDisable(true));
   const onClose = () => setIsOpen(false);
 
   const onDisable = () => setDisable(false);
 
   const increaseCount = () => {
-    setTasksArray(
-      tasksArray.map((item, index) => {
-        if (index === id) {
-          setFullTimeValue(fullTimeValue + 25);
-          return {
-            ...item,
-            pomodoros: item.pomodoros + 1,
-          };
-        }
-        return item;
-      })
-    );
+    const filteredArray = tasksArray.map((item, index) => {
+      if (index === id) {
+        setFullTimeValue(fullTimeValue + 25);
+        return {
+          ...item,
+          pomodoros: item.pomodoros + 1,
+        };
+      }
+      return item;
+    });
+    setTasksArray(filteredArray);
+    setArrays(filteredArray);
   };
 
   const decreaseCount = () => {
-    setTasksArray(
-      tasksArray.map((item, index) => {
-        if (index === id && item.pomodoros > 1) {
-          setFullTimeValue(fullTimeValue - 25);
-          return {
-            ...item,
-            pomodoros: item.pomodoros - 1,
-          };
-        }
-        return item;
-      })
-    );
+    const filteredArray = tasksArray.map((item, index) => {
+      if (index === id && item.pomodoros > 1) {
+        setFullTimeValue(fullTimeValue - 25);
+        return {
+          ...item,
+          pomodoros: item.pomodoros - 1,
+        };
+      }
+      return item;
+    });
+    setTasksArray(filteredArray);
+    setArrays(filteredArray);
   };
 
   const dropdownRef = () => {
@@ -64,11 +69,11 @@ export const Task: FC<ITaskProp> = ({ text, id }) => {
   const ref = useOutsideClick(dropdownRef);
 
   useEffect(() => {
-    setTasksArray(
-      tasksArray.map((item, index) =>
-        index === id ? { ...item, value: taskText } : item
-      )
+    const filteredArray = tasksArray.map((item, index) =>
+      index === id ? { ...item, value: taskText } : item
     );
+    setTasksArray(filteredArray);
+    setArrays(filteredArray);
   }, [taskText]);
 
   return (

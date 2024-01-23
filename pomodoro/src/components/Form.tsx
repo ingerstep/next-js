@@ -1,13 +1,15 @@
 "use client";
 
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { ITask, useStore } from "@/store/store";
 import { Task } from "./Task";
 import { Button } from "./ui/button";
+import { useLocalStorageState } from "@/hooks/use-storage";
 
 export const Form: FC = () => {
   const { tasksArray, setTasksArray, fullTimeValue, setFullTimeValue } =
     useStore();
+  const [arrays, setArrays] = useLocalStorageState<Array<ITask>>("array", []);
   const [value, setValue] = useState<string>("");
   const hours = Math.floor(fullTimeValue / 60);
   const remainderMinutes = fullTimeValue % 60;
@@ -16,12 +18,24 @@ export const Form: FC = () => {
     setValue(e.target.value);
   };
 
+  useEffect(() => {
+    setTasksArray(arrays);
+    if (fullTimeValue === 0) {
+      const totalTime = arrays.reduce(
+        (acc, task) => acc + task.pomodoros * 25,
+        0
+      );
+      setFullTimeValue(totalTime);
+    }
+  }, []);
+
   const handleClick = () => {
     if (value) {
       const newTask: ITask = { value, pomodoros: 1 };
-      setTasksArray([...tasksArray, newTask]);
       setValue("");
       setFullTimeValue(fullTimeValue + 25);
+      setTasksArray([...tasksArray, newTask]);
+      setArrays(tasksArray);
     }
   };
 

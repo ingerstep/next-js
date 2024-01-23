@@ -1,12 +1,13 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useStore } from "@/store/store";
 import { Modal } from "./modal";
 import { SvgIncrease } from "../icons/increase";
 import { SvgDecrease } from "../icons/decrease";
 import { SvgEdit } from "../icons/edit";
 import { SvgDelete } from "../icons/delete";
+import { useLocalStorageState } from "@/hooks/use-storage";
 
 interface DropdownProps {
   id: number;
@@ -32,10 +33,15 @@ export const Dropdown: FC<DropdownProps> = ({
     setModalOpen,
   } = useStore();
 
+  const [arrays, setArrays] = useLocalStorageState<Array<any>>("array", []);
+
   const removeItem = () => {
     setFullTimeValue(fullTimeValue - tasksArray[id].pomodoros * 25);
 
-    setTasksArray(tasksArray.filter((item, index) => index !== id));
+    const updateArray = tasksArray.filter((item, index) => index !== id);
+
+    setArrays(updateArray);
+    setTasksArray(updateArray);
 
     onClose();
 

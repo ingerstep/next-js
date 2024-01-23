@@ -2,10 +2,12 @@ class StorageWrapper {
     private storage?: Storage;
 
     constructor(type: 'local' | 'session') {
-        try {
-            this.storage = type === 'local' ? window.localStorage : window.sessionStorage
-        } catch (error) {
-            console.log(error)
+        if (typeof window !== 'undefined') {
+            try {
+                this.storage = type === 'local' ? window.localStorage : window.sessionStorage
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
