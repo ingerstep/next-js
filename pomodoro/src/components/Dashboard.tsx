@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { useCountdown } from "@/hooks/useCountdown";
+import { useCountdown } from "@/hooks/use-countdown";
 import { useStore } from "@/store/store";
 import { Button } from "./ui/button";
 import { SvgPlus } from "./icons/plus";

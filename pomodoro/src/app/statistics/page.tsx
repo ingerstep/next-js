@@ -1,78 +1,65 @@
 "use client";
 
-import Image from "next/image";
+import { Bar } from "@/components/Bar";
+import { Widget } from "@/components/Widget";
+import { SvgArrow } from "@/components/icons/arrow";
+import { SvgFocus } from "@/components/icons/focus";
+import { SvgPause } from "@/components/icons/pause";
+import { SvgPomodoro } from "@/components/icons/pomodoro";
+import { SvgStop } from "@/components/icons/stop";
 import { useStore } from "@/store/store";
 
 export default function StatisticsPage() {
   const { pauseTime, stopCount, workingTime } = useStore();
   return (
-    <div>
+    <div className="px-[80px] pt-[88px]">
       <div className="flex items-center justify-between mb-8">
         <h1 className="font-bold text-2xl">Ваша активность</h1>
-        <button className="w-[370px] py-5 px-4 text-base font-normal">
+        <button className="w-[370px] py-5 px-4 text-base font-normal bg-[#F4F4F4] flex justify-between items-center">
           Эта неделя
-          <Image src="/arrow.svg" alt="Arrow SVG" width={14} height={7} />
+          <SvgArrow />
         </button>
       </div>
 
-      <div className="">
-        <div className="">
-          <div className="">
-            <span className="">Понедельник</span>
-            <div className="">
-              Вы работали над задачами в течение
-              <span className="">{workingTime} минуты</span>
+      <div className="flex mb-6">
+        <div className="max-w-[296px] flex flex-col mr-8">
+          <div className=" mb-8 p-6 flex flex-col bg-[#F4F4F4]">
+            <span className="text-2xl font-bold mb-[14px]">Понедельник</span>
+            <div className="text-base font-normal">
+              {"Вы работали над задачами в течение "}
+              <span className="text-[#DC3E22] font-bold">
+                {workingTime} минуты
+              </span>
             </div>
           </div>
-          <div className="">
-            <div>
-              <Image
-                src="/pomodoro.svg"
-                alt="Pomodoro SVG"
-                width={81}
-                height={81}
-              />
-              <span>x2</span>
+          <div className="flex flex-col">
+            <div className="flex p-6 items-center justify-center bg-[#F4F4F4]">
+              <SvgPomodoro />
+              <span className="text-2xl text-[#999] ml-3">x2</span>
             </div>
-            <span>2 помидора</span>
+            <span className="bg-[#DC3E22] text-white py-2 text-center">
+              2 помидора
+            </span>
           </div>
         </div>
-        <div className=""></div>
+        <div className="w-full bg-[#F4F4F4]">
+          <Bar />
+        </div>
       </div>
-      <div className="">
-        <div className="">
-          <span className="">Фокус</span>
-          <span className="">35%</span>
-          <Image
-            className=""
-            src="/focus.svg"
-            alt="Focus SVG"
-            width={130}
-            height={130}
-          />
-        </div>
-        <div className="">
-          <span className="">Время на паузе</span>
-          <span className="">{pauseTime}м</span>
-          <Image
-            className=""
-            src="/pause.svg"
-            alt="Pause SVG"
-            width={130}
-            height={130}
-          />
-        </div>
-        <div className="">
-          <span className="">Остановки</span>
-          <span className="">{stopCount ? stopCount : 0}</span>
-          <Image
-            className=""
-            src="/stop.svg"
-            alt="Stop SVG"
-            width={130}
-            height={130}
-          />
-        </div>
+      <div className="flex justify-between">
+        <Widget title="Фокус" svg={<SvgFocus />} className="bg-[#FFDDA9]">
+          35%
+        </Widget>
+        <Widget
+          title="Время на паузе"
+          svg={<SvgPause />}
+          className="bg-[#DFDCFE]"
+        >
+          {pauseTime}м
+        </Widget>
+        <Widget title="Остановки" svg={<SvgStop />} className="bg-[#C5F1FF]">
+          {stopCount ? stopCount : 0}
+        </Widget>
       </div>
     </div>
   );

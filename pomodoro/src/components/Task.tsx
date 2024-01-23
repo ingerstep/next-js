@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import clsx from "clsx";
-import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { useOutsideClick } from "@/hooks/use-outside-click";
 import { useStore } from "@/store/store";
 import { Dropdown } from "./ui/dropdown";
 import { SvgDots } from "./icons/dots";
@@ -27,22 +27,34 @@ export const Task: FC<ITaskProp> = ({ text, id }) => {
 
   const onDisable = () => setDisable(false);
 
-  const updatePomodoros = (pomodoros: number) => {
+  const increaseCount = () => {
     setTasksArray(
-      tasksArray.map((item, index) =>
-        index === id ? { ...item, pomodoros } : item
-      )
+      tasksArray.map((item, index) => {
+        if (index === id) {
+          setFullTimeValue(fullTimeValue + 25);
+          return {
+            ...item,
+            pomodoros: item.pomodoros + 1,
+          };
+        }
+        return item;
+      })
     );
   };
 
-  const increaseCount = () => {
-    setFullTimeValue(fullTimeValue + 25);
-    updatePomodoros(tasksArray[id].pomodoros + 1);
-  };
-
   const decreaseCount = () => {
-    setFullTimeValue(fullTimeValue - 25);
-    updatePomodoros(tasksArray[id].pomodoros - 1);
+    setTasksArray(
+      tasksArray.map((item, index) => {
+        if (index === id && item.pomodoros > 1) {
+          setFullTimeValue(fullTimeValue - 25);
+          return {
+            ...item,
+            pomodoros: item.pomodoros - 1,
+          };
+        }
+        return item;
+      })
+    );
   };
 
   const dropdownRef = () => {

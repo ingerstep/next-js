@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { useStore } from "@/store/store";
-import { useOutsideClick } from "@/hooks/useOutsideClick";
+import { useOutsideClick } from "@/hooks/use-outside-click";
 import { createPortal } from "react-dom";
 import { SvgExit } from "../icons/exit";
 import { Button } from "./button";
