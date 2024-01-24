@@ -18,7 +18,7 @@ export const Dashboard: FC = () => {
     resume,
     stop,
     skip,
-    totalTime,
+    TOTAL_TIME,
   } = useCountdown();
 
   return (
@@ -52,7 +52,7 @@ export const Dashboard: FC = () => {
             </>
           ) : (
             <>
-              {!isRunning && timeRemaining === totalTime ? (
+              {!isRunning && timeRemaining === TOTAL_TIME ? (
                 <Button size='sm' variant='green' onClick={start} className='mr-6'>
                   Старт
                 </Button>

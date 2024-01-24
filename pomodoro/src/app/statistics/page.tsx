@@ -1,6 +1,6 @@
 'use client';
 
-import { Bar } from '@/components/Bar';
+import { Chart } from '@/components/Chart';
 import { Widget } from '@/components/Widget';
 import { SvgArrow } from '@/components/icons/arrow';
 import { SvgFocus } from '@/components/icons/focus';
@@ -39,7 +39,7 @@ export default function StatisticsPage() {
           </div>
         </div>
         <div className='w-full bg-[#F4F4F4]'>
-          <Bar />
+          <Chart />
         </div>
       </div>
       <div className='flex justify-between'>

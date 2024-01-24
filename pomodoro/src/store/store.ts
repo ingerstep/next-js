@@ -18,6 +18,8 @@ export interface State {
   setStopCount: (stopCount: number) => void;
   workingTime: number;
   setWorkingTime: (workingTime: number) => void;
+  successTaskCount: number;
+  setSuccessTaskCount: (successTaskCount: number) => void;
 }
 
 export const useStore = create<State>((set) => ({
@@ -33,4 +35,6 @@ export const useStore = create<State>((set) => ({
   setStopCount: (stopCount) => set({ stopCount }),
   workingTime: 0,
   setWorkingTime: (workingTime) => set({ workingTime }),
+  successTaskCount: 0,
+  setSuccessTaskCount: (successTaskCount) => set({ successTaskCount }),
 }));

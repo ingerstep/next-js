@@ -2,15 +2,17 @@ import { useEffect, useState } from 'react';
 import { TasksArrayProps, useStore } from '../store/store';
 import { useLocalStorageState } from './use-storage';
 
-interface StatisticsProps {
+export interface StatisticsProps {
   stopCount: number;
   workingTime: number;
   pauseTime: number;
   successTaskCount: number;
+  day: number;
 }
 
+const TOTAL_TIME = 5;
+
 export const useCountdown = () => {
-  const totalTime = 1_500;
   const {
     tasksArray,
     setTasksArray,
@@ -20,8 +22,10 @@ export const useCountdown = () => {
     setStopCount,
     workingTime,
     setWorkingTime,
+    successTaskCount,
+    setSuccessTaskCount,
   } = useStore();
-  const [timeRemaining, setTimeRemaining] = useState(totalTime);
+  const [timeRemaining, setTimeRemaining] = useState(TOTAL_TIME);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -31,6 +35,8 @@ export const useCountdown = () => {
   );
 
   const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>('array', []);
+
+  const currentDay = new Date().getDay();
 
   useEffect(() => {
     let countdownTimer: any = null;
@@ -54,9 +60,12 @@ export const useCountdown = () => {
     }
 
     if (timeRemaining === 0) {
+      const dayStatisticsIndex = storageStaistics.findIndex((item) => item.day === currentDay);
+
+      setSuccessTaskCount(successTaskCount + 1);
       clearInterval(countdownTimer);
       setIsRunning(false);
-      setTimeRemaining(totalTime);
+      setTimeRemaining(TOTAL_TIME);
 
       const filteredArray = tasksArray
         .map((item, index) => {
@@ -73,6 +82,29 @@ export const useCountdown = () => {
       setTasksArray(filteredArray);
       setStorageTasks(filteredArray);
 
+      if (dayStatisticsIndex !== -1) {
+        const updatedStatistics = [...storageStaistics];
+        updatedStatistics[dayStatisticsIndex] = {
+          ...updatedStatistics[dayStatisticsIndex],
+          stopCount,
+          workingTime,
+          pauseTime,
+          successTaskCount,
+        };
+        setStorageStaistics(updatedStatistics);
+      } else {
+        setStorageStaistics((prevStatistics) => [
+          ...prevStatistics,
+          {
+            stopCount,
+            workingTime,
+            pauseTime,
+            successTaskCount,
+            day: currentDay,
+          },
+        ]);
+      }
+
       alert('Count down');
     }
 
@@ -80,14 +112,14 @@ export const useCountdown = () => {
       clearInterval(countdownTimer);
       clearInterval(pauseTimer);
     };
-  }, [isRunning, isPaused, timeRemaining, setPauseTime]);
+  }, [isRunning, isPaused, timeRemaining, setPauseTime, currentDay]);
 
   const addOneMinute = () => {
     setTimeRemaining((prevTime) => prevTime + 60);
   };
 
   const start = () => {
-    setTimeRemaining(totalTime);
+    setTimeRemaining(TOTAL_TIME);
     setIsRunning(true);
     setIsPaused(false);
   };
@@ -108,7 +140,7 @@ export const useCountdown = () => {
 
   const stop = () => {
     setIsRunning(false);
-    setTimeRemaining(totalTime);
+    setTimeRemaining(TOTAL_TIME);
     setIsPaused(false);
     setStopCount(stopCount + 1);
   };
@@ -134,7 +166,7 @@ export const useCountdown = () => {
     resume,
     stop,
     skip,
-    totalTime,
+    TOTAL_TIME,
     addOneMinute,
   };
 };

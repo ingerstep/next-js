@@ -24,9 +24,7 @@ export const Dropdown: FC<DropdownProps> = ({
   increaseCount,
   decreaseCount,
 }) => {
-  const { tasksArray, setTasksArray, fullTimeValue, 
-    setFullTimeValue, modalOpen, 
-    setModalOpen } =
+  const { tasksArray, setTasksArray, fullTimeValue, setFullTimeValue, modalOpen, setModalOpen } =
     useStore();
 
   const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>('array', []);
