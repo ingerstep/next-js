@@ -1,3 +1,4 @@
+import { TOTAL_TIME } from '@/constants/constants';
 import { create } from 'zustand';
 
 export interface TasksArrayProps {
@@ -20,12 +21,16 @@ export interface State {
   setWorkingTime: (workingTime: number) => void;
   successTaskCount: number;
   setSuccessTaskCount: (successTaskCount: number) => void;
-  isStarted: boolean
-  setIsStarted: (isStarted: boolean) => void
-  isPaused: boolean
-  setIsPaused: (isPaused: boolean) => void
-  isRunning: boolean
-  setIsRunning: (isRunning: boolean) => void
+  isStarted: boolean;
+  setIsStarted: (isStarted: boolean) => void;
+  isPaused: boolean;
+  setIsPaused: (isPaused: boolean) => void;
+  isRunning: boolean;
+  setIsRunning: (isRunning: boolean) => void;
+  timeRemaining: number;
+  setTimeRemaining: (timeRemaining: number) => void;
+  taskCountIsDone: number
+  setTaskCountIsDone: (taskCountIsDone: number) => void;
 }
 
 export const useStore = create<State>((set) => ({
@@ -48,5 +53,9 @@ export const useStore = create<State>((set) => ({
   isPaused: false,
   setIsPaused: (isPaused) => set({ isPaused }),
   isRunning: false,
-  setIsRunning: (isRunning) => set({ isRunning })
+  setIsRunning: (isRunning) => set({ isRunning }),
+  timeRemaining: TOTAL_TIME,
+  setTimeRemaining: (timeRemaining) => set({ timeRemaining }),
+  taskCountIsDone: 1,
+  setTaskCountIsDone: (taskCountIsDone) => set({ taskCountIsDone })
 }));

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { TasksArrayProps, useStore } from '../store/store';
 import { useLocalStorageState } from './use-storage';
+import { TOTAL_TIME } from '@/constants/constants';
 
 export interface StatisticsProps {
   stopCount: number;
@@ -9,8 +10,6 @@ export interface StatisticsProps {
   successTaskCount: number;
   day: number;
 }
-
-const TOTAL_TIME = 5;
 
 export const useCountdown = () => {
   const {
@@ -28,10 +27,15 @@ export const useCountdown = () => {
     setFullTimeValue,
     isStarted,
     setIsStarted,
-    isPaused, setIsPaused, isRunning, setIsRunning
+    isPaused,
+    setIsPaused,
+    isRunning,
+    setIsRunning,
+    timeRemaining,
+    setTimeRemaining,
+    taskCountIsDone, setTaskCountIsDone
   } = useStore();
-  const [timeRemaining, setTimeRemaining] = useState(TOTAL_TIME);
-  const [taskCountIsDone, setTaskCountIsDone] = useState(1);
+
   const [storageStaistics, setStorageStaistics] = useLocalStorageState<Array<StatisticsProps>>(
     'statistics',
     [],
@@ -42,16 +46,24 @@ export const useCountdown = () => {
     TOTAL_TIME,
   );
 
-  const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>('tasksArray', []);
+  const [tasksIsDone, setTaskIsDone] = useLocalStorageState<number>(
+    'tasksIsDone',
+    1,
+  );
 
+  const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>(
+    'tasksArray',
+    [],
+  );
   useEffect(() => {
     let countdownTimer: any = null;
     let pauseTimer: any = null;
 
+
     if (isRunning) {
       countdownTimer = setInterval(() => {
-        setTimeRemaining((prevTime) => prevTime - 1);
-        setLastSavedTime(timeRemaining - 1)
+        setTimeRemaining(timeRemaining - 1);
+        setLastSavedTime(timeRemaining - 1);
         setWorkingTime(workingTime + 1);
       }, 1000);
     } else {
@@ -71,13 +83,21 @@ export const useCountdown = () => {
       const dayStatisticsIndex = storageStaistics.findIndex((item) => item.day === currentDay);
       const updatedStatistics = [...storageStaistics];
 
-      const filteredArray = tasksArray.map((item, index) => ({
-        ...item,
-        pomodoros: index === 0 ? item.pomodoros - 1 : item.pomodoros,
-      })).filter((item) => item.pomodoros !== 0);
+      const filteredArray = tasksArray
+        .map((item, index) => ({
+          ...item,
+          pomodoros: index === 0 ? item.pomodoros - 1 : item.pomodoros,
+        }))
+        .filter((item) => item.pomodoros !== 0
+        );
 
       setTasksArray(filteredArray);
       setStorageTasks(filteredArray);
+
+      if (tasksArray.length !== filteredArray.length) {
+        setTaskCountIsDone(taskCountIsDone + 1);
+        setTaskIsDone(taskCountIsDone + 1);
+      }
 
       setSuccessTaskCount(successTaskCount + 1);
       setFullTimeValue(fullTimeValue - 25);
@@ -107,9 +127,9 @@ export const useCountdown = () => {
       clearInterval(countdownTimer);
       setIsRunning(false);
       setTimeRemaining(TOTAL_TIME);
-      setLastSavedTime(TOTAL_TIME)
-      setIsStarted(false)
-      setTaskCountIsDone((prev) => prev + 1)
+      setLastSavedTime(TOTAL_TIME);
+      setIsStarted(false);
+
 
       alert('Count down');
     }
@@ -118,20 +138,30 @@ export const useCountdown = () => {
       clearInterval(countdownTimer);
       clearInterval(pauseTimer);
     };
-  }, [isRunning, isPaused, timeRemaining, setPauseTime, successTaskCount, fullTimeValue, lastSavedTime]);
+  }, [
+    taskCountIsDone,
+    tasksArray,
+    isRunning,
+    isPaused,
+    timeRemaining,
+    setPauseTime,
+    successTaskCount,
+    fullTimeValue,
+    lastSavedTime,
+  ]);
 
   const addOneMinute = () => {
     setIsRunning(false);
     tasksArray.length !== 0 && isStarted && setIsPaused(true);
-    tasksArray.length !== 0 && setTimeRemaining((prevTime) => prevTime + 60);
+    tasksArray.length !== 0 && setTimeRemaining(timeRemaining + 60);
     tasksArray.length !== 0 && setLastSavedTime((prev) => prev + 60);
   };
 
   const start = () => {
     setTimeRemaining(timeRemaining);
-    setLastSavedTime(timeRemaining)
+    setLastSavedTime(timeRemaining);
     tasksArray.length !== 0 && setIsRunning(true);
-    tasksArray.length !== 0 && setIsStarted(true)
+    tasksArray.length !== 0 && setIsStarted(true);
     setIsPaused(false);
   };
 
@@ -152,17 +182,17 @@ export const useCountdown = () => {
   const stop = () => {
     setIsRunning(false);
     setTimeRemaining(TOTAL_TIME);
-    setLastSavedTime(TOTAL_TIME)
+    setLastSavedTime(TOTAL_TIME);
     setIsPaused(false);
     isStarted && setStopCount(stopCount + 1);
-    setIsStarted(false)
+    setIsStarted(false);
   };
 
   const skip = () => {
     stop();
-    setFullTimeValue(fullTimeValue - 25)
-    setTasksArray(tasksArray.filter((item, index) => index !== 0))
-    setStorageTasks(tasksArray.filter((item, index) => index !== 0))
+    setFullTimeValue(fullTimeValue - 25);
+    setTasksArray(tasksArray.filter((item, index) => index !== 0));
+    setStorageTasks(tasksArray.filter((item, index) => index !== 0));
   };
 
   const formatTime = (time: number) => {
@@ -192,8 +222,6 @@ export const useCountdown = () => {
     lastSavedTime,
     setTimeRemaining,
     setIsPaused,
-    setIsStarted
+    setIsStarted,
   };
 };
-
-

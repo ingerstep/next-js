@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, useEffect } from 'react';
-import { useCountdown } from '@/hooks/use-countdown';
+import { StatisticsProps, useCountdown } from '@/hooks/use-countdown';
 import { useStore } from '@/store/store';
 import { Button } from './ui/button';
 import { SvgPlus } from './icons/plus';
@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import { useLocalStorageState } from '@/hooks/use-storage';
 
 export const Dashboard: FC = () => {
-  const { tasksArray } = useStore();
+  const { tasksArray, successTaskCount, setSuccessTaskCount, setTaskCountIsDone } = useStore();
 
   const {
     formatTime,
@@ -23,7 +23,6 @@ export const Dashboard: FC = () => {
     skip,
     isPaused,
     isStarted,
-    successTaskCount,
     taskCountIsDone,
     TOTAL_TIME,
     setTimeRemaining,
@@ -34,9 +33,20 @@ export const Dashboard: FC = () => {
     TOTAL_TIME,
   );
 
+  const [storageStaistics, setStorageStaistics] = useLocalStorageState<Array<StatisticsProps>>(
+    'statistics',
+    [],
+  );
+
+  const [tasksIsDone, setTaskIsDone] = useLocalStorageState<number>('tasksIsDone', 1);
+
   useEffect(() => {
     setTimeRemaining(lastSavedTime);
-  }, []);
+    setTaskCountIsDone(tasksIsDone);
+    storageStaistics[0]
+      ? setSuccessTaskCount(storageStaistics[0].successTaskCount)
+      : setSuccessTaskCount(1);
+  }, [tasksIsDone]);
 
   return (
     <div className='relative w-[120%] h-[510px] flex flex-col justify-start items-start bg-[#C4C4C4]'>
@@ -48,9 +58,7 @@ export const Dashboard: FC = () => {
       >
         <div className='text-white text-base font-bold'>{tasksArray[0] && tasksArray[0].value}</div>
         {tasksArray.length !== 0 && (
-          <div className='text-white text-base font-normal'>
-            Помидор {successTaskCount > 0 ? successTaskCount : 1}
-          </div>
+          <div className='text-white text-base font-normal'>Помидор {successTaskCount}</div>
         )}
       </div>
       <div className='w-full h-full flex justify-center items-center flex-col bg-[#F4F4F4]'>

@@ -6,20 +6,29 @@ import { useOutsideClick } from '@/hooks/use-outside-click';
 import { createPortal } from 'react-dom';
 import { SvgExit } from '../icons/exit';
 import { Button } from './button';
+import { TOTAL_TIME } from '@/constants/constants';
+import { useLocalStorageState } from '@/hooks/use-storage';
 
 interface ModalProps {
   removeItem: () => void;
 }
 
 export const Modal: FC<ModalProps> = ({ removeItem }) => {
-  const { setModalOpen, isPaused, setIsPaused, setIsRunning } = useStore();
+  const { setModalOpen, setTimeRemaining, setIsPaused, setIsRunning, setIsStarted } = useStore();
   const node = document.querySelector('#modal');
   const ref = useOutsideClick(() => setModalOpen(false));
+  const [lastSavedTime, setLastSavedTime] = useLocalStorageState<number>(
+    'lastSavedTime',
+    TOTAL_TIME,
+  );
 
   const handleClick = () => {
     removeItem();
-    setIsPaused(true);
+    setIsStarted(false);
+    setIsPaused(false);
     setIsRunning(false);
+    setTimeRemaining(TOTAL_TIME);
+    setLastSavedTime(TOTAL_TIME);
   };
   if (!node) return;
 
