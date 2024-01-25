@@ -8,7 +8,10 @@ import { useLocalStorageState } from '@/hooks/use-storage';
 
 export const Form: FC = () => {
   const { tasksArray, setTasksArray, fullTimeValue, setFullTimeValue } = useStore();
-  const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>('array', []);
+  const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>(
+    'tasksArray',
+    [],
+  );
   const [value, setValue] = useState<string>('');
   const hours = Math.floor(fullTimeValue / 60);
   const remainderMinutes = fullTimeValue % 60;

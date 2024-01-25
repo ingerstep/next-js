@@ -19,7 +19,10 @@ export const Task: FC<TaskProps> = ({ text, id }) => {
   const [taskText, setTaskText] = useState(text);
   const [disable, setDisable] = useState(true);
 
-  const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>('array', []);
+  const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>(
+    'tasksArray',
+    [],
+  );
 
   const inputRef = useOutsideClick(() => setDisable(true));
   const onClose = () => setIsOpen(false);

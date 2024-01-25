@@ -20,6 +20,12 @@ export interface State {
   setWorkingTime: (workingTime: number) => void;
   successTaskCount: number;
   setSuccessTaskCount: (successTaskCount: number) => void;
+  isStarted: boolean
+  setIsStarted: (isStarted: boolean) => void
+  isPaused: boolean
+  setIsPaused: (isPaused: boolean) => void
+  isRunning: boolean
+  setIsRunning: (isRunning: boolean) => void
 }
 
 export const useStore = create<State>((set) => ({
@@ -37,4 +43,10 @@ export const useStore = create<State>((set) => ({
   setWorkingTime: (workingTime) => set({ workingTime }),
   successTaskCount: 0,
   setSuccessTaskCount: (successTaskCount) => set({ successTaskCount }),
+  isStarted: false,
+  setIsStarted: (isStarted) => set({ isStarted }),
+  isPaused: false,
+  setIsPaused: (isPaused) => set({ isPaused }),
+  isRunning: false,
+  setIsRunning: (isRunning) => set({ isRunning })
 }));

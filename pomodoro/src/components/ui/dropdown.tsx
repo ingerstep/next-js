@@ -27,15 +27,18 @@ export const Dropdown: FC<DropdownProps> = ({
   const { tasksArray, setTasksArray, fullTimeValue, setFullTimeValue, modalOpen, setModalOpen } =
     useStore();
 
-  const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>('array', []);
+  const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>(
+    'tasksArray',
+    [],
+  );
 
   const removeItem = () => {
     setFullTimeValue(fullTimeValue - tasksArray[id].pomodoros * 25);
 
     const updateArray = tasksArray.filter((item, index) => index !== id);
 
-    setStorageTasks(updateArray);
     setTasksArray(updateArray);
+    setStorageTasks(updateArray);
 
     onClose();
 
