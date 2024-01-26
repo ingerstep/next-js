@@ -1,13 +1,13 @@
 'use client';
 
 import { ChangeEvent, FC, useEffect, useState } from 'react';
-import { TasksArrayProps, useStore } from '@/store/store';
 import { Task } from './Task';
 import { Button } from './ui/button';
 import { useLocalStorageState } from '@/hooks/use-storage';
+import { TasksArrayProps, useTasksStore } from '@/store/tasks-store';
 
 export const Form: FC = () => {
-  const { tasksArray, setTasksArray, fullTimeValue, setFullTimeValue } = useStore();
+  const { fullTimeValue, setFullTimeValue, tasksArray, setTasksArray } = useTasksStore();
   const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>(
     'tasksArray',
     [],

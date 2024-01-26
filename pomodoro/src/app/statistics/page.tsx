@@ -7,10 +7,10 @@ import { SvgFocus } from '@/components/icons/focus';
 import { SvgPause } from '@/components/icons/pause';
 import { SvgPomodoro } from '@/components/icons/pomodoro';
 import { SvgStop } from '@/components/icons/stop';
-import { useStore } from '@/store/store';
+import { useTimerStore } from '@/store/timer-store';
 
 export default function StatisticsPage() {
-  const { pauseTime, stopCount, workingTime } = useStore();
+  const { pauseTime, stopCount, workingTime } = useTimerStore();
   return (
     <div className='px-[80px] pt-[88px]'>
       <div className='flex items-center justify-between mb-8'>

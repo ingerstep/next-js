@@ -3,10 +3,10 @@
 import { FC, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useOutsideClick } from '@/hooks/use-outside-click';
-import { TasksArrayProps, useStore } from '@/store/store';
 import { Dropdown } from './ui/dropdown';
 import { SvgDots } from './icons/dots';
 import { useLocalStorageState } from '@/hooks/use-storage';
+import { TasksArrayProps, useTasksStore } from '@/store/tasks-store';
 
 interface TaskProps {
   id: number;
@@ -14,7 +14,7 @@ interface TaskProps {
 }
 
 export const Task: FC<TaskProps> = ({ text, id }) => {
-  const { tasksArray, setTasksArray, setFullTimeValue, fullTimeValue, modalOpen } = useStore();
+  const { tasksArray, setTasksArray, fullTimeValue, setFullTimeValue, modalOpen } = useTasksStore();
   const [isOpen, setIsOpen] = useState(false);
   const [taskText, setTaskText] = useState(text);
   const [disable, setDisable] = useState(true);

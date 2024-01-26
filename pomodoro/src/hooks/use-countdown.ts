@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
-import { TasksArrayProps, useStore } from '../store/store';
+import { useEffect } from 'react';
 import { useLocalStorageState } from './use-storage';
 import { TOTAL_TIME } from '@/constants/constants';
+import { useTimerStore } from '@/store/timer-store';
+import { TasksArrayProps, useTasksStore } from '@/store/tasks-store';
 
 export interface StatisticsProps {
   stopCount: number;
@@ -13,28 +14,32 @@ export interface StatisticsProps {
 
 export const useCountdown = () => {
   const {
-    tasksArray,
-    setTasksArray,
-    pauseTime,
-    setPauseTime,
+    timeRemaining,
+    setTimeRemaining,
+    isRunning,
+    setIsRunning,
     stopCount,
     setStopCount,
+    isStarted,
+    setIsStarted,
     workingTime,
     setWorkingTime,
+    isPaused,
+    setIsPaused,
+    pauseTime,
+    setPauseTime,
+  } = useTimerStore();
+
+  const {
+    tasksArray,
+    setTasksArray,
+    taskCountIsDone,
+    setTaskCountIsDone,
     successTaskCount,
     setSuccessTaskCount,
     fullTimeValue,
     setFullTimeValue,
-    isStarted,
-    setIsStarted,
-    isPaused,
-    setIsPaused,
-    isRunning,
-    setIsRunning,
-    timeRemaining,
-    setTimeRemaining,
-    taskCountIsDone, setTaskCountIsDone
-  } = useStore();
+  } = useTasksStore();
 
   const [storageStaistics, setStorageStaistics] = useLocalStorageState<Array<StatisticsProps>>(
     'statistics',
@@ -46,15 +51,13 @@ export const useCountdown = () => {
     TOTAL_TIME,
   );
 
-  const [tasksIsDone, setTaskIsDone] = useLocalStorageState<number>(
-    'tasksIsDone',
-    1,
-  );
+  const [tasksIsDone, setTaskIsDone] = useLocalStorageState<number>('tasksIsDone', 1);
 
   const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>(
     'tasksArray',
     [],
   );
+
   useEffect(() => {
     let countdownTimer: any = null;
     let pauseTimer: any = null;
@@ -205,23 +208,11 @@ export const useCountdown = () => {
 
   return {
     formatTime,
-    timeRemaining,
-    isRunning,
-    setIsRunning,
     start,
     pause,
     resume,
     stop,
     skip,
-    TOTAL_TIME,
     addOneMinute,
-    isStarted,
-    successTaskCount,
-    taskCountIsDone,
-    isPaused,
-    lastSavedTime,
-    setTimeRemaining,
-    setIsPaused,
-    setIsStarted,
   };
 };

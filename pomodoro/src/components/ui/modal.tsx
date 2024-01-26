@@ -1,20 +1,22 @@
 'use client';
 
 import { FC } from 'react';
-import { useStore } from '@/store/store';
 import { useOutsideClick } from '@/hooks/use-outside-click';
 import { createPortal } from 'react-dom';
 import { SvgExit } from '../icons/exit';
 import { Button } from './button';
 import { TOTAL_TIME } from '@/constants/constants';
 import { useLocalStorageState } from '@/hooks/use-storage';
+import { useTasksStore } from '@/store/tasks-store';
+import { useTimerStore } from '@/store/timer-store';
 
 interface ModalProps {
   removeItem: () => void;
 }
 
 export const Modal: FC<ModalProps> = ({ removeItem }) => {
-  const { setModalOpen, setTimeRemaining, setIsPaused, setIsRunning, setIsStarted } = useStore();
+  const { setModalOpen } = useTasksStore();
+  const { setIsStarted, setIsPaused, setIsRunning, setTimeRemaining } = useTimerStore();
   const node = document.querySelector('#modal');
   const ref = useOutsideClick(() => setModalOpen(false));
   const [lastSavedTime, setLastSavedTime] = useLocalStorageState<number>(

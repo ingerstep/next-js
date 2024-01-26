@@ -2,31 +2,20 @@
 
 import { FC, useEffect } from 'react';
 import { StatisticsProps, useCountdown } from '@/hooks/use-countdown';
-import { useStore } from '@/store/store';
 import { Button } from './ui/button';
 import { SvgPlus } from './icons/plus';
 import clsx from 'clsx';
 import { useLocalStorageState } from '@/hooks/use-storage';
+import { TOTAL_TIME } from '@/constants/constants';
+import { useTimerStore } from '@/store/timer-store';
+import { useTasksStore } from '@/store/tasks-store';
 
 export const Dashboard: FC = () => {
-  const { tasksArray, successTaskCount, setSuccessTaskCount, setTaskCountIsDone } = useStore();
+  const { timeRemaining, setTimeRemaining, isStarted, isRunning, isPaused } = useTimerStore();
+  const { setTaskCountIsDone, setSuccessTaskCount, tasksArray, successTaskCount, taskCountIsDone } =
+    useTasksStore();
 
-  const {
-    formatTime,
-    timeRemaining,
-    addOneMinute,
-    isRunning,
-    start,
-    pause,
-    resume,
-    stop,
-    skip,
-    isPaused,
-    isStarted,
-    taskCountIsDone,
-    TOTAL_TIME,
-    setTimeRemaining,
-  } = useCountdown();
+  const { formatTime, addOneMinute, start, pause, resume, stop, skip } = useCountdown();
 
   const [lastSavedTime, setLastSavedTime] = useLocalStorageState<number>(
     'lastSavedTime',

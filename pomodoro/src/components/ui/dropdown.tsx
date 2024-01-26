@@ -1,13 +1,13 @@
 'use client';
 
 import { FC } from 'react';
-import { TasksArrayProps, useStore } from '@/store/store';
 import { Modal } from './modal';
 import { SvgIncrease } from '../icons/increase';
 import { SvgDecrease } from '../icons/decrease';
 import { SvgEdit } from '../icons/edit';
 import { SvgDelete } from '../icons/delete';
 import { useLocalStorageState } from '@/hooks/use-storage';
+import { TasksArrayProps, useTasksStore } from '@/store/tasks-store';
 
 interface DropdownProps {
   id: number;
@@ -24,8 +24,8 @@ export const Dropdown: FC<DropdownProps> = ({
   increaseCount,
   decreaseCount,
 }) => {
-  const { tasksArray, setTasksArray, fullTimeValue, setFullTimeValue, modalOpen, setModalOpen } =
-    useStore();
+  const { fullTimeValue, setFullTimeValue, tasksArray, setTasksArray, modalOpen, setModalOpen } =
+    useTasksStore();
 
   const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>(
     'tasksArray',
