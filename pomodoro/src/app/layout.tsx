@@ -17,8 +17,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='en'>
-      <body className={clsx(roboto.className, 'text-2xl text-[#333]')}>
-        <header className='w-full px-0 py-4 text-[#DC3E22] shadow-md'>
+      <body
+        className={clsx(
+          roboto.className,
+          'text-2xl text-[#333] dark:bg-[#34495E] dark:text-[#BDC3C7]',
+        )}
+      >
+        <header className='w-full px-0 py-4 text-[#DC3E22] shadow-md dark:bg-[#2C3E50] dark:text-[#ECF0F1]'>
           <Header />
         </header>
         <main className='max-w-[1440px] mx-auto'>{children}</main>

@@ -7,10 +7,32 @@ import { SvgFocus } from '@/components/icons/focus';
 import { SvgPause } from '@/components/icons/pause';
 import { SvgPomodoro } from '@/components/icons/pomodoro';
 import { SvgStop } from '@/components/icons/stop';
+import { useLocalStorageState } from '@/hooks/use-storage';
+import { useTasksStore } from '@/store/tasks-store';
 import { useTimerStore } from '@/store/timer-store';
+import { useEffect, useState } from 'react';
+
+interface StatisticsProps {
+  stopCount: number;
+  workingTime: number;
+  pauseTime: number;
+  successTaskCount: number;
+  day: number;
+}
 
 export default function StatisticsPage() {
   const { pauseTime, stopCount, workingTime } = useTimerStore();
+  const [statistic, setStatistic] = useState<Array<StatisticsProps>>();
+
+  const [storageStaistics, setStorageStaistics] = useLocalStorageState<Array<StatisticsProps>>(
+    'statistics',
+    [],
+  );
+
+  useEffect(() => {
+    setStatistic(storageStaistics);
+  }, [storageStaistics]);
+
   return (
     <div className='px-[80px] pt-[88px]'>
       <div className='flex items-center justify-between mb-8'>
@@ -27,15 +49,17 @@ export default function StatisticsPage() {
             <span className='text-2xl font-bold mb-[14px]'>Понедельник</span>
             <div className='text-base font-normal'>
               {'Вы работали над задачами в течение '}
-              <span className='text-[#DC3E22] font-bold'>{workingTime} минуты</span>
+              <span className='text-[#DC3E22] font-bold'>
+                {statistic ? statistic[0].workingTime : 0} минуты
+              </span>
             </div>
           </div>
           <div className='flex flex-col'>
             <div className='flex p-6 items-center justify-center bg-[#F4F4F4]'>
               <SvgPomodoro />
-              <span className='text-2xl text-[#999] ml-3'>x2</span>
+              {/* <span className='text-2xl text-[#999] ml-3'>x2</span> */}
             </div>
-            <span className='bg-[#DC3E22] text-white py-2 text-center'>2 помидора</span>
+            {/* <span className='bg-[#DC3E22] text-white py-2 text-center'>0 помидора</span> */}
           </div>
         </div>
         <div className='w-full bg-[#F4F4F4]'>
@@ -47,10 +71,10 @@ export default function StatisticsPage() {
           35%
         </Widget>
         <Widget title='Время на паузе' svg={<SvgPause />} className='bg-[#DFDCFE]'>
-          {pauseTime}м
+          {statistic ? storageStaistics[0].pauseTime : 0}м
         </Widget>
         <Widget title='Остановки' svg={<SvgStop />} className='bg-[#C5F1FF]'>
-          {stopCount ? stopCount : 0}
+          {statistic ? storageStaistics[0].stopCount : 0}
         </Widget>
       </div>
     </div>

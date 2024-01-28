@@ -41,7 +41,7 @@ export const Form: FC = () => {
   return (
     <div className='flex flex-col w-[370px]'>
       <input
-        className='py-5 px-4 mb-6 text-[#999] bg-[#F4F4F4] text-base font-light focus-visible:outline-none'
+        className='py-5 px-4 mb-6 text-[#999] bg-[#F4F4F4] text-base font-light focus-visible:outline-none dark:text-[#ECF0F1] dark:bg-[#2C3E50]'
         value={value}
         onChange={onChange}
         placeholder='Название задачи'
@@ -55,7 +55,7 @@ export const Form: FC = () => {
       ))}
       <div className='mb-6'>
         {tasksArray.length !== 0 && (
-          <span className='text-[#999] text-base font-light'>
+          <span className='text-[#999] text-base font-light dark:text-[#ECF0F1]'>
             {hours !== 0 && `${hours} час `}
             {`${remainderMinutes} минут`}
           </span>

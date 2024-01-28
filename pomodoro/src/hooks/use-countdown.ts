@@ -125,14 +125,13 @@ export const useCountdown = () => {
             day: currentDay,
           },
         ]);
-      }
+      };
 
       clearInterval(countdownTimer);
       setIsRunning(false);
       setTimeRemaining(TOTAL_TIME);
       setLastSavedTime(TOTAL_TIME);
       setIsStarted(false);
-
 
       alert('Count down');
     }
@@ -151,13 +150,16 @@ export const useCountdown = () => {
     successTaskCount,
     fullTimeValue,
     lastSavedTime,
+    pauseTime
   ]);
 
   const addOneMinute = () => {
     setIsRunning(false);
-    tasksArray.length !== 0 && isStarted && setIsPaused(true);
-    tasksArray.length !== 0 && setTimeRemaining(timeRemaining + 60);
-    tasksArray.length !== 0 && setLastSavedTime((prev) => prev + 60);
+    if (tasksArray.length !== 0) {
+      isStarted && setIsPaused(true);
+      setTimeRemaining(timeRemaining + 60);
+      setLastSavedTime((prev) => prev + 60);
+    }
   };
 
   const start = () => {

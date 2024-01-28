@@ -82,8 +82,8 @@ export const Task: FC<TaskProps> = ({ text, id }) => {
       <div ref={inputRef} className='mr-auto text-base bg-transparent font-light'>
         <input
           className={clsx(
-            'mr-auto text-base font-light focus-visible:outline-none',
-            disable ? 'bg-transparent' : ' bg-[#F4F4F4]',
+            'mr-auto text-base font-light focus-visible:outline-none dark:text-[#ECF0F1]',
+            disable ? 'bg-transparent' : ' bg-[#F4F4F4] dark:bg-[#2C3E50]',
           )}
           disabled={disable}
           onChange={(e) => setTaskText(e.target.value)}
