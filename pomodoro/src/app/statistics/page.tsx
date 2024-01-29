@@ -32,7 +32,7 @@ export default function StatisticsPage() {
 
   useEffect(() => {
     setStatistic(storageStaistics);
-  }, [storageStaistics]);
+  }, []);
 
   return (
     <div className='px-[80px] pt-[88px]'>
@@ -57,17 +57,25 @@ export default function StatisticsPage() {
           </div>
           <div className='flex flex-col'>
             <div className='flex p-6 items-center justify-center bg-[#F4F4F4] dark:bg-[#2C3E50]'>
-              <SvgPomodoroDefault />
-              <span className='text-2xl text-[#999] ml-3 dark:text-[#ECF0F1]'>x2</span>
+              {statistic ? (
+                <>
+                  <SvgPomodoro />
+                  <span className='text-2xl text-[#999] ml-3 dark:text-[#ECF0F1]'>
+                    x{statistic[0].successTaskCount}
+                  </span>
+                </>
+              ) : (
+                <SvgPomodoroDefault />
+              )}
             </div>
-            <span className='bg-[#DC3E22] text-white py-2 text-center dark:text-[#ECF0F1]'>
-              0 помидора
-            </span>
+            {statistic && (
+              <span className='bg-[#DC3E22] text-white py-2 text-center dark:text-[#ECF0F1]'>
+                {statistic[0].successTaskCount} помидора
+              </span>
+            )}
           </div>
         </div>
-        <div className='w-full bg-[#F4F4F4] dark:bg-[#2C3E50]'>
-          <Chart />
-        </div>
+        <Chart statistic={statistic} />
       </div>
       <div className='flex justify-between dark:text-[#215a80]'>
         <Widget title='Фокус' svg={<SvgFocus />} className='bg-[#FFDDA9]'>
