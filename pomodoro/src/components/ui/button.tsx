@@ -17,7 +17,7 @@ export const Button: FC<ButtonProps> = ({ onClick, children, className, variant,
     {
       green:
         'bg-[#A8B64F] text-white hover:bg-[#899441] dark:bg-[#3498DB] dark:text-[#ECF0F1] dark:hover:bg-[#215a80]',
-      red: 'text-[#DC3E22] bg-transparent border-2 border-[#DC3E22] hover:bg-[#DC3E22] hover:text-white dark:text-[#E74C3C] dark:hover:bg-[#E74C3C] dark:hover:text-[#ECF0F1]',
+      red: 'text-[#DC3E22] bg-transparent border-2 border-[#DC3E22] hover:bg-[#DC3E22] hover:text-white dark:text-[#ECF0F1] dark:bg-[#E74C3C] dark:hover:bg-[#6d2921] dark:border-none',
       disabled: 'text-[#C4C4C4] bg-transparent border-2 border-[#C4C4C4]',
     }[variant],
     {

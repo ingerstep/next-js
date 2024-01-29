@@ -9,13 +9,13 @@ import { useLocalStorageState } from '@/hooks/use-storage';
 import { TOTAL_TIME } from '@/constants/constants';
 import { useTimerStore } from '@/store/timer-store';
 import { useTasksStore } from '@/store/tasks-store';
+import { formatTime } from '@/utils/format-time';
 
 export const Dashboard: FC = () => {
   const { timeRemaining, setTimeRemaining, isStarted, isRunning, isPaused } = useTimerStore();
   const { setTaskCountIsDone, setSuccessTaskCount, tasksArray, successTaskCount, taskCountIsDone } =
     useTasksStore();
-
-  const { formatTime, addOneMinute, start, pause, resume, stop, skip } = useCountdown();
+  const { addOneMinute, start, pause, resume, stop, skip } = useCountdown();
 
   const [lastSavedTime, setLastSavedTime] = useLocalStorageState<number>(
     'lastSavedTime',
@@ -44,7 +44,7 @@ export const Dashboard: FC = () => {
           'flex justify-between items-center py-5 px-10 w-full h-14 dark:bg-[#2C3E50]',
           isStarted
             ? isRunning
-              ? 'bg-[#A8B64F] dark:bg-[#215a80]'
+              ? 'bg-[#A8B64F] dark:bg-[rgb(33,90,128)]'
               : 'bg-[#DC3E22] dark:bg-[#3498DB]'
             : 'bg-[#C4C4C4]',
         )}
