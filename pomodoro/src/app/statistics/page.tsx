@@ -18,6 +18,7 @@ interface StatisticsProps {
   pauseTime: number;
   successTaskCount: number;
   day: number;
+  taskCountIsDone: number;
 }
 
 export default function StatisticsPage() {
@@ -51,7 +52,7 @@ export default function StatisticsPage() {
             <div className='text-base font-normal'>
               {'Вы работали над задачами в течение '}
               <span className='text-[#DC3E22] font-bold dark:text-[#E74C3C]'>
-                {statistic ? statistic[0].workingTime : 0} минуты
+                {statistic ? statistic[statistic.length - 1].workingTime : 0} минуты
               </span>
             </div>
           </div>
@@ -61,7 +62,7 @@ export default function StatisticsPage() {
                 <>
                   <SvgPomodoro />
                   <span className='text-2xl text-[#999] ml-3 dark:text-[#ECF0F1]'>
-                    x{statistic[0].successTaskCount}
+                    x{statistic[statistic.length - 1].successTaskCount}
                   </span>
                 </>
               ) : (
@@ -70,7 +71,7 @@ export default function StatisticsPage() {
             </div>
             {statistic && (
               <span className='bg-[#DC3E22] text-white py-2 text-center dark:text-[#ECF0F1]'>
-                {statistic[0].successTaskCount} помидора
+                {statistic[statistic.length - 1].successTaskCount} помидора
               </span>
             )}
           </div>
@@ -82,10 +83,10 @@ export default function StatisticsPage() {
           35%
         </Widget>
         <Widget title='Время на паузе' svg={<SvgPause />} className='bg-[#DFDCFE]'>
-          {statistic ? storageStaistics[0].pauseTime : 0}м
+          {statistic ? storageStaistics[storageStaistics.length - 1].pauseTime : 0}м
         </Widget>
         <Widget title='Остановки' svg={<SvgStop />} className='bg-[#C5F1FF]'>
-          {statistic ? storageStaistics[0].stopCount : 0}
+          {statistic ? storageStaistics[storageStaistics.length - 1].stopCount : 0}
         </Widget>
       </div>
     </div>

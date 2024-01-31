@@ -10,6 +10,7 @@ export interface StatisticsProps {
   pauseTime: number;
   successTaskCount: number;
   day: number;
+  taskCountIsDone: number;
 }
 
 export const useCountdown = () => {
@@ -50,8 +51,6 @@ export const useCountdown = () => {
     'lastSavedTime',
     TOTAL_TIME,
   );
-
-  const [tasksIsDone, setTaskIsDone] = useLocalStorageState<number>('tasksIsDone', 1);
 
   const [storageTasks, setStorageTasks] = useLocalStorageState<Array<TasksArrayProps>>(
     'tasksArray',
@@ -97,10 +96,7 @@ export const useCountdown = () => {
       setTasksArray(filteredArray);
       setStorageTasks(filteredArray);
 
-      if (tasksArray.length !== filteredArray.length) {
-        setTaskCountIsDone(taskCountIsDone + 1);
-        setTaskIsDone(taskCountIsDone + 1);
-      }
+
 
       setSuccessTaskCount(successTaskCount + 1);
       setFullTimeValue(fullTimeValue - 25);
@@ -108,9 +104,6 @@ export const useCountdown = () => {
       if (dayStatisticsIndex !== -1) {
         updatedStatistics[dayStatisticsIndex] = {
           ...updatedStatistics[dayStatisticsIndex],
-          stopCount,
-          workingTime,
-          pauseTime,
           successTaskCount: successTaskCount + 1,
         };
         setStorageStaistics(updatedStatistics);
@@ -123,9 +116,33 @@ export const useCountdown = () => {
             pauseTime,
             successTaskCount: successTaskCount + 1,
             day: currentDay,
+            taskCountIsDone
           },
         ]);
       };
+
+      if (tasksArray.length !== filteredArray.length) {
+        setTaskCountIsDone(taskCountIsDone + 1);
+        if (dayStatisticsIndex !== -1) {
+          updatedStatistics[dayStatisticsIndex] = {
+            ...updatedStatistics[dayStatisticsIndex],
+            taskCountIsDone: taskCountIsDone + 1,
+          };
+          setStorageStaistics(updatedStatistics);
+        } else {
+          setStorageStaistics((prevStatistics) => [
+            ...prevStatistics,
+            {
+              stopCount,
+              workingTime,
+              pauseTime,
+              successTaskCount,
+              day: currentDay,
+              taskCountIsDone: taskCountIsDone + 1
+            },
+          ]);
+        };
+      }
 
       clearInterval(countdownTimer);
       setIsRunning(false);
@@ -150,7 +167,8 @@ export const useCountdown = () => {
     successTaskCount,
     fullTimeValue,
     lastSavedTime,
-    pauseTime
+    pauseTime,
+    setStorageStaistics
   ]);
 
   const addOneMinute = () => {

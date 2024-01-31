@@ -27,15 +27,16 @@ export const Dashboard: FC = () => {
     [],
   );
 
-  const [tasksIsDone, setTaskIsDone] = useLocalStorageState<number>('tasksIsDone', 1);
-
   useEffect(() => {
     setTimeRemaining(lastSavedTime);
-    setTaskCountIsDone(tasksIsDone);
-    storageStaistics[0]
-      ? setSuccessTaskCount(storageStaistics[0].successTaskCount)
+    storageStaistics[storageStaistics.length - 1]
+      ? setTaskCountIsDone(storageStaistics[storageStaistics.length - 1].taskCountIsDone)
+      : setTaskCountIsDone(0);
+
+    storageStaistics[storageStaistics.length - 1]
+      ? setSuccessTaskCount(storageStaistics[storageStaistics.length - 1].successTaskCount)
       : setSuccessTaskCount(1);
-  }, [tasksIsDone]);
+  }, []);
 
   return (
     <div className='relative w-[120%] h-[510px] flex flex-col justify-start items-start bg-[#C4C4C4]'>
