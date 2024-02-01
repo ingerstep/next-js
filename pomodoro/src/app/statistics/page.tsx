@@ -9,6 +9,7 @@ import { SvgPomodoro } from '@/components/icons/pomodoro';
 import { SvgPomodoroDefault } from '@/components/icons/pomodoro-default';
 import { SvgStop } from '@/components/icons/stop';
 import { useLocalStorageState } from '@/hooks/use-storage';
+import { useTimerStore } from '@/store/timer-store';
 import { getDayOfWeek } from '@/utils/get-day-of-week';
 import { useEffect, useState } from 'react';
 
@@ -22,7 +23,7 @@ interface StatisticsProps {
 }
 
 export default function StatisticsPage() {
-  const [statistic, setStatistic] = useState<Array<StatisticsProps>>();
+  const { statisticArray, setStatisticArray } = useTimerStore();
 
   const [storageStaistics, setStorageStaistics] = useLocalStorageState<Array<StatisticsProps>>(
     'statistics',
@@ -32,7 +33,7 @@ export default function StatisticsPage() {
   const dayOfWeek = getDayOfWeek();
 
   useEffect(() => {
-    setStatistic(storageStaistics);
+    storageStaistics.length !== 0 && setStatisticArray(storageStaistics);
   }, []);
 
   return (
@@ -52,41 +53,47 @@ export default function StatisticsPage() {
             <div className='text-base font-normal'>
               {'Вы работали над задачами в течение '}
               <span className='text-[#DC3E22] font-bold dark:text-[#E74C3C]'>
-                {statistic ? statistic[statistic.length - 1].workingTime : 0} минуты
+                {statisticArray.length !== 0 &&
+                  statisticArray[statisticArray.length - 1].workingTime}
+                минуты
               </span>
             </div>
           </div>
           <div className='flex flex-col'>
             <div className='flex p-6 items-center justify-center bg-[#F4F4F4] dark:bg-[#2C3E50]'>
-              {statistic ? (
+              {statisticArray ? (
                 <>
                   <SvgPomodoro />
                   <span className='text-2xl text-[#999] ml-3 dark:text-[#ECF0F1]'>
-                    x{statistic[statistic.length - 1].successTaskCount}
+                    x
+                    {statisticArray.length !== 0 &&
+                      statisticArray[statisticArray.length - 1].successTaskCount}
                   </span>
                 </>
               ) : (
                 <SvgPomodoroDefault />
               )}
             </div>
-            {statistic && (
+            {statisticArray && (
               <span className='bg-[#DC3E22] text-white py-2 text-center dark:text-[#ECF0F1]'>
-                {statistic[statistic.length - 1].successTaskCount} помидора
+                {statisticArray.length !== 0 &&
+                  statisticArray[statisticArray.length - 1].successTaskCount}
+                помидора
               </span>
             )}
           </div>
         </div>
-        <Chart statistic={statistic} />
+        <Chart statistic={statisticArray} />
       </div>
       <div className='flex justify-between dark:text-[#215a80]'>
         <Widget title='Фокус' svg={<SvgFocus />} className='bg-[#FFDDA9]'>
           35%
         </Widget>
         <Widget title='Время на паузе' svg={<SvgPause />} className='bg-[#DFDCFE]'>
-          {statistic ? storageStaistics[storageStaistics.length - 1].pauseTime : 0}м
+          {statisticArray.length !== 0 && storageStaistics[storageStaistics.length - 1].pauseTime}м
         </Widget>
         <Widget title='Остановки' svg={<SvgStop />} className='bg-[#C5F1FF]'>
-          {statistic ? storageStaistics[storageStaistics.length - 1].stopCount : 0}
+          {statisticArray.length !== 0 && storageStaistics[storageStaistics.length - 1].stopCount}
         </Widget>
       </div>
     </div>

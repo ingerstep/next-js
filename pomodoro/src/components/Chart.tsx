@@ -1,4 +1,4 @@
-import { StatisticsProps } from '@/hooks/use-countdown';
+import { StatisticsProps } from '@/store/timer-store';
 import clsx from 'clsx';
 
 const dayOfWeek = new Date().getDay();

@@ -1,19 +1,13 @@
 import { useEffect } from 'react';
 import { useLocalStorageState } from './use-storage';
 import { TOTAL_TIME } from '@/constants/constants';
-import { useTimerStore } from '@/store/timer-store';
+import { StatisticsProps, useTimerStore } from '@/store/timer-store';
 import { TasksArrayProps, useTasksStore } from '@/store/tasks-store';
 
-export interface StatisticsProps {
-  stopCount: number;
-  workingTime: number;
-  pauseTime: number;
-  successTaskCount: number;
-  day: number;
-  taskCountIsDone: number;
-}
-
 export const useCountdown = () => {
+  const timerStore = useTimerStore();
+  const tasksStore = useTasksStore();
+
   const {
     timeRemaining,
     setTimeRemaining,
@@ -29,7 +23,9 @@ export const useCountdown = () => {
     setIsPaused,
     pauseTime,
     setPauseTime,
-  } = useTimerStore();
+    statisticArray,
+    setStatisticArray,
+  } = timerStore;
 
   const {
     tasksArray,
@@ -40,9 +36,9 @@ export const useCountdown = () => {
     setSuccessTaskCount,
     fullTimeValue,
     setFullTimeValue,
-  } = useTasksStore();
+  } = tasksStore;
 
-  const [storageStaistics, setStorageStaistics] = useLocalStorageState<Array<StatisticsProps>>(
+  const [storageStatistics, setStorageStatistics] = useLocalStorageState<Array<StatisticsProps>>(
     'statistics',
     [],
   );
@@ -60,14 +56,42 @@ export const useCountdown = () => {
   useEffect(() => {
     let countdownTimer: any = null;
     let pauseTimer: any = null;
+    const currentDay = new Date().getDay();
+    const dayStatisticsIndex = storageStatistics.findIndex((item) => item.day === currentDay);
+    const updatedStatistics = [...storageStatistics];
 
+    const commonStatisticsData = {
+      stopCount,
+      workingTime,
+      pauseTime,
+      successTaskCount,
+      day: currentDay,
+      taskCountIsDone,
+    };
+
+    const handleInterval = () => {
+      setTimeRemaining(timeRemaining - 1);
+      setLastSavedTime(timeRemaining - 1);
+      setWorkingTime(workingTime + 1);
+
+      if (dayStatisticsIndex !== -1) {
+        updatedStatistics[dayStatisticsIndex] = {
+          ...updatedStatistics[dayStatisticsIndex],
+          workingTime: workingTime + 1,
+        };
+      } else {
+        updatedStatistics.push({
+          ...commonStatisticsData,
+          workingTime: workingTime + 1,
+        });
+      }
+
+      setStorageStatistics(updatedStatistics);
+      setStatisticArray(updatedStatistics);
+    };
 
     if (isRunning) {
-      countdownTimer = setInterval(() => {
-        setTimeRemaining(timeRemaining - 1);
-        setLastSavedTime(timeRemaining - 1);
-        setWorkingTime(workingTime + 1);
-      }, 1000);
+      countdownTimer = setInterval(handleInterval, 1000);
     } else {
       clearInterval(countdownTimer);
     }
@@ -75,28 +99,36 @@ export const useCountdown = () => {
     if (isPaused) {
       pauseTimer = setInterval(() => {
         setPauseTime(pauseTime + 1);
+
+        if (dayStatisticsIndex !== -1) {
+          updatedStatistics[dayStatisticsIndex] = {
+            ...updatedStatistics[dayStatisticsIndex],
+            pauseTime: pauseTime + 1,
+          };
+        } else {
+          updatedStatistics.push({
+            ...commonStatisticsData,
+            pauseTime: pauseTime + 1,
+          });
+        }
+
+        setStorageStatistics(updatedStatistics);
+        setStatisticArray(updatedStatistics);
       }, 1000);
     } else {
       clearInterval(pauseTimer);
     }
 
     if (timeRemaining === 0) {
-      const currentDay = new Date().getDay();
-      const dayStatisticsIndex = storageStaistics.findIndex((item) => item.day === currentDay);
-      const updatedStatistics = [...storageStaistics];
-
       const filteredArray = tasksArray
         .map((item, index) => ({
           ...item,
           pomodoros: index === 0 ? item.pomodoros - 1 : item.pomodoros,
         }))
-        .filter((item) => item.pomodoros !== 0
-        );
+        .filter((item) => item.pomodoros !== 0);
 
       setTasksArray(filteredArray);
       setStorageTasks(filteredArray);
-
-
 
       setSuccessTaskCount(successTaskCount + 1);
       setFullTimeValue(fullTimeValue - 25);
@@ -106,42 +138,33 @@ export const useCountdown = () => {
           ...updatedStatistics[dayStatisticsIndex],
           successTaskCount: successTaskCount + 1,
         };
-        setStorageStaistics(updatedStatistics);
       } else {
-        setStorageStaistics((prevStatistics) => [
-          ...prevStatistics,
-          {
-            stopCount,
-            workingTime,
-            pauseTime,
-            successTaskCount: successTaskCount + 1,
-            day: currentDay,
-            taskCountIsDone
-          },
-        ]);
-      };
+        updatedStatistics.push({
+          ...commonStatisticsData,
+          successTaskCount: successTaskCount + 1,
+        });
+      }
+
+      setStorageStatistics(updatedStatistics);
+      setStatisticArray(updatedStatistics);
 
       if (tasksArray.length !== filteredArray.length) {
         setTaskCountIsDone(taskCountIsDone + 1);
+
         if (dayStatisticsIndex !== -1) {
           updatedStatistics[dayStatisticsIndex] = {
             ...updatedStatistics[dayStatisticsIndex],
             taskCountIsDone: taskCountIsDone + 1,
           };
-          setStorageStaistics(updatedStatistics);
         } else {
-          setStorageStaistics((prevStatistics) => [
-            ...prevStatistics,
-            {
-              stopCount,
-              workingTime,
-              pauseTime,
-              successTaskCount,
-              day: currentDay,
-              taskCountIsDone: taskCountIsDone + 1
-            },
-          ]);
-        };
+          updatedStatistics.push({
+            ...commonStatisticsData,
+            taskCountIsDone: taskCountIsDone + 1,
+          });
+        }
+
+        setStorageStatistics(updatedStatistics);
+        setStatisticArray(updatedStatistics);
       }
 
       clearInterval(countdownTimer);
@@ -163,12 +186,14 @@ export const useCountdown = () => {
     isRunning,
     isPaused,
     timeRemaining,
-    setPauseTime,
     successTaskCount,
     fullTimeValue,
     lastSavedTime,
     pauseTime,
-    setStorageStaistics
+    setStorageStatistics,
+    setStatisticArray,
+    workingTime,
+    setWorkingTime,
   ]);
 
   const addOneMinute = () => {
@@ -207,15 +232,30 @@ export const useCountdown = () => {
     setTimeRemaining(TOTAL_TIME);
     setLastSavedTime(TOTAL_TIME);
     setIsPaused(false);
-    isStarted && setStopCount(stopCount + 1);
+    setStopCount(stopCount + 1);
+
+    if (isStarted) {
+      const currentDay = new Date().getDay();
+      const dayStatisticsIndex = storageStatistics.findIndex((item) => item.day === currentDay);
+      const updatedStatistics = [...storageStatistics];
+
+      updatedStatistics[dayStatisticsIndex] = {
+        ...updatedStatistics[dayStatisticsIndex],
+        stopCount: stopCount + 1,
+      };
+
+      setStorageStatistics(updatedStatistics);
+      setStatisticArray(updatedStatistics);
+    }
+
     setIsStarted(false);
   };
 
   const skip = () => {
     stop();
     setFullTimeValue(fullTimeValue - 25);
-    setTasksArray(tasksArray.filter((item, index) => index !== 0));
-    setStorageTasks(tasksArray.filter((item, index) => index !== 0));
+    setTasksArray(tasksArray.slice(1));
+    setStorageTasks(tasksArray.slice(1));
   };
 
   return {

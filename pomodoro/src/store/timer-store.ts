@@ -1,6 +1,15 @@
 import { TOTAL_TIME } from '@/constants/constants';
 import { create } from 'zustand';
 
+export interface StatisticsProps {
+  stopCount: number;
+  workingTime: number;
+  pauseTime: number;
+  successTaskCount: number;
+  day: number;
+  taskCountIsDone: number;
+}
+
 export interface TimerStoreState {
   pauseTime: number;
   setPauseTime: (pauseTime: number) => void;
@@ -16,6 +25,8 @@ export interface TimerStoreState {
   setIsRunning: (isRunning: boolean) => void;
   timeRemaining: number;
   setTimeRemaining: (timeRemaining: number) => void;
+  statisticArray: StatisticsProps[];
+  setStatisticArray: (tasksArray: StatisticsProps[]) => void;
 }
 
 export const useTimerStore = create<TimerStoreState>((set) => ({
@@ -33,4 +44,6 @@ export const useTimerStore = create<TimerStoreState>((set) => ({
   setIsRunning: (isRunning) => set({ isRunning }),
   timeRemaining: TOTAL_TIME,
   setTimeRemaining: (timeRemaining) => set({ timeRemaining }),
+  statisticArray: [],
+  setStatisticArray: (statisticArray) => set({ statisticArray }),
 }));
