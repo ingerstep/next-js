@@ -23,7 +23,6 @@ export const useCountdown = () => {
     setIsPaused,
     pauseTime,
     setPauseTime,
-    statisticArray,
     setStatisticArray,
   } = timerStore;
 
@@ -67,6 +66,7 @@ export const useCountdown = () => {
       successTaskCount,
       day: currentDay,
       taskCountIsDone,
+      date: new Date(),
     };
 
     const handleInterval = () => {

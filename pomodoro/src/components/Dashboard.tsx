@@ -28,15 +28,20 @@ export const Dashboard: FC = () => {
   );
 
   useEffect(() => {
-    setTimeRemaining(lastSavedTime);
-    storageStaistics[storageStaistics.length - 1]
-      ? setTaskCountIsDone(storageStaistics[storageStaistics.length - 1].taskCountIsDone)
-      : setTaskCountIsDone(0);
+    const currentDay = new Date().getDay();
 
-    storageStaistics[storageStaistics.length - 1]
-      ? setSuccessTaskCount(storageStaistics[storageStaistics.length - 1].successTaskCount)
-      : setSuccessTaskCount(1);
-  }, []);
+    setTimeRemaining(lastSavedTime);
+
+    const lastStatistics = storageStaistics[storageStaistics.length - 1];
+
+    if (lastStatistics && lastStatistics.day === currentDay) {
+      setTaskCountIsDone(lastStatistics.taskCountIsDone);
+      setSuccessTaskCount(lastStatistics.successTaskCount);
+    } else {
+      setTaskCountIsDone(0);
+      setSuccessTaskCount(0);
+    }
+  }, [storageStaistics]);
 
   return (
     <div className='relative w-[120%] h-[510px] flex flex-col justify-start items-start bg-[#C4C4C4]'>
